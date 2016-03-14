@@ -11,7 +11,7 @@ class Card:
             self.type = card_type
 
     def __str__(self):
-        return "{} of {}".format(self.value, self.card_type)
+        return "'{}' of {}".format(self.value, self.type)
 
     def get_rate(self, game_str):
         if game_str == 'All Trumps':
@@ -27,4 +27,10 @@ class Card:
 
 class Deck:
     def __init__(self):
-        self.deck = random.shuffle([Card(v, t) for v in VALUES for t in CARD_TYPES])
+        self.deck = [Card(v, t) for v in VALUES for t in CARD_TYPES]
+
+    def shuffle(self):
+        random.shuffle(self.deck)
+
+    def __str__(self):
+        return str([str(c) for c in self.deck])
