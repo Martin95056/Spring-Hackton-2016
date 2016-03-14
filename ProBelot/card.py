@@ -1,15 +1,12 @@
-from settings import trump, not_trump
-
-
-TYPES = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
-VALUES = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+from settings import trump, not_trump,\
+                      CARD_TYPES, VALUES
 
 
 class Card:
     def __init__(self, value, type):
         if value in VALUES:
             self.value = value
-        if type in TYPES:
+        if type in CARD_TYPES:
             self.type = type
 
     def get_rate(self, game_str):

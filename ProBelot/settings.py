@@ -1,3 +1,6 @@
+CARD_TYPES = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
+VALUES = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+
 trump = {
     'A': 11,
     'K': 4,
