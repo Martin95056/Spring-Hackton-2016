@@ -17,5 +17,8 @@ class Card:
             return trump[self.value]
         elif game_str == 'No Trumps':
             return not_trump[self.value]
-        elif game_str == self.type:
-            pass
+        else:
+            if game_str == self.type:
+                return trump[self.value]
+            else:
+                return not_trump[self.value]
