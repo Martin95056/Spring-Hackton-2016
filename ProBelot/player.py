@@ -21,7 +21,7 @@ class Player:
     def throw_card(self, card):
         self.cards.remove(card)
         self.given_cards.append(card)
-        
+
         globals(ALL_GIVEN_CARDS).append(card)
         if len(globals(ALL_GIVEN_CARDS)) == 32:
             globals(ALL_GIVEN_CARDS) = []
@@ -60,7 +60,7 @@ class Player:
             return any([c.type == self.coplayer.game_i_want
                         for c in self.cards])
         else:
-            return True
+            return False
 
     def set_game(self, game):
         self.game_i_want = game
