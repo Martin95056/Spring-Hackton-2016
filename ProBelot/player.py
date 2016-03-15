@@ -1,6 +1,7 @@
 from game_logic import J_9_more, A_10_more
 from settings import CARD_TYPES
 
+ALL_GIVEN_CARDS = []
 
 class Player:
     def __init__(self):
@@ -19,6 +20,7 @@ class Player:
     def throw_card(self, card):
         self.cards.remove(card)
         self.given_cards.append(card)
+        ALL_GIVEN_CARDS.append(card)
 
     def has_cards(self):
         return len(self.cards) > 0

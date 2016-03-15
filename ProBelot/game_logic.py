@@ -1,6 +1,6 @@
 from settings import CARD_TYPES
 from single_round import pregame
-from player import Player
+from player import Player, ALL_GIVEN_CARDS
 
 
 def J_9_more(player):
@@ -20,11 +20,11 @@ def A_10_more(player):
                 if player.card_types()[c1_pos] == c.type:
                     return True
 
-def valid_values(current_player, next_player): 
+def valid_values(player): 
     same_type = []
     different_type = []
-    for card in next_player.cards:
-        if card.card_type == current_player.given_cards[len(current_player.given_cards) - 1].card_type:
+    for card in player.cards:
+        if card.card_type == ALL_GIVEN_CARDS[len(ALL_GIVEN_CARDS) - 1].card_type:
             same_type.append(card)
         else:
             different_type.append(card)
@@ -32,7 +32,7 @@ def valid_values(current_player, next_player):
     valid_cards = []
      
     for card in same_type:
-        if card.get_index_by_value(pregame()) > current_player.given_cards[len(current_player.given_cards) - 1].get_index_by_value(pregame()):
+        if card.get_index_by_value(pregame()) > ALL_GIVEN_CARDS[len(ALL_GIVEN_CARDS) - 1].get_index_by_value(pregame()):
             valid_cards.append(card)
 
     if valid_cards >= 1:

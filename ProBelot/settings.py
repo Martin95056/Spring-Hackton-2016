@@ -1,6 +1,5 @@
 import collections
 
-
 CARD_TYPES = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
 VALUES = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 BIDDINGS = ['Pass', 'Recontra', 'Contra',
