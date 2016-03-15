@@ -20,17 +20,18 @@ def A_10_more(player):
                 if player.card_types()[c1_pos] == c.type:
                     return True
 
-def valid_values(player): 
+
+def valid_values(player):
     same_type = []
     different_type = []
     for card in player.cards:
-        if card.card_type == ALL_GIVEN_CARDS[len(ALL_GIVEN_CARDS) - 1].card_type:
+        if card.card_type == ALL_GIVEN_CARDS[0].card_type:
             same_type.append(card)
         else:
             different_type.append(card)
 
     valid_cards = []
-     
+
     for card in same_type:
         if card.get_index_by_value(pregame()) > ALL_GIVEN_CARDS[len(ALL_GIVEN_CARDS) - 1].get_index_by_value(pregame()):
             valid_cards.append(card)
@@ -41,7 +42,6 @@ def valid_values(player):
         return same_type
     else:
         return different_type
-
 
 
 def all_trumps_logic(player, coplayer):
@@ -85,7 +85,7 @@ def all_trumps_logic(player, coplayer):
             elif c.value == '8':
                 player.throw_card(c)
 
-            #Приемам. че имам мега ебани карти и няма значение какво хвърлям
+            # Приемам. че имам мега ебани карти и няма значение какво хвърлям
             else:
                 player.throw_card(c)
 

@@ -3,6 +3,7 @@ from settings import CARD_TYPES
 
 ALL_GIVEN_CARDS = []
 
+
 class Player:
     def __init__(self):
         self.cards = []
@@ -20,7 +21,9 @@ class Player:
     def throw_card(self, card):
         self.cards.remove(card)
         self.given_cards.append(card)
-        ALL_GIVEN_CARDS.append(card)
+        globals(ALL_GIVEN_CARDS).append(card)
+        if len(globals(ALL_GIVEN_CARDS)) == 4:
+            globals(ALL_GIVEN_CARDS) = []
 
     def has_cards(self):
         return len(self.cards) > 0
