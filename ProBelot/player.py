@@ -55,7 +55,7 @@ class Player:
     def set_game(self, game):
         self.game_i_want = game
 
-    def pregame(self):
+    def pregame(self, valid_games):
         if self.card_values().count('J') >= 3:
             self.set_game('All Trumps')
 
@@ -99,6 +99,9 @@ class Player:
 
                 else:
                     self.set_game('Pass')
+
+        if self.game_i_want not in valid_games:
+            self.set_game('Pass')
 
         return self.game_i_want
 
