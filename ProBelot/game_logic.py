@@ -48,10 +48,12 @@ def all_trumps_logic(player, coplayer):
     # Когато играчът е пръв
     if len(ALL_GIVEN_CARDS_IN_HAND) == 0:
         for c in player.cards:
+            #Играе 'А', ако имаш 'А' и '10'(и повече) от една боя
             if J_9_more(player.cards):
                 pos = player.get_index_by_value('J')
                 player.throw_card(player.cards[pos])
-
+            
+            #Играе боята, която съотборникът му е казал
             elif player.has_cards_of_coplayer_game():
                 for v in player.get_all_values_of_one_type(coplayer.game_i_want):
                     pos = player.get_index_by_value(v)
@@ -59,12 +61,14 @@ def all_trumps_logic(player, coplayer):
                     break
 
             elif c.value == '9':
-                vals = player.get_all_values_of_one_type(c.type)
 
+                #Играе 9-ката ако Валето е минало
                 for x in ALL_GIVEN_CARDS:
                     if x.value == 'J' and x.type == c.type:
                         player.throw_card(c)
 
+                vals = player.get_all_values_of_one_type(c.type)
+                #Играе '10' или 'А', ако има двойна 9ка
                 if len(vals) == 2:
                     if '10' in vals:
                         pos = player.get_index_by_value('10')
@@ -75,6 +79,7 @@ def all_trumps_logic(player, coplayer):
                     else:
                         continue
 
+                #Играе някоя от картите от боята на 9-ката с цел избиване на вале
                 elif len(vals) >= 3:
                     for v in vals:
                         if v != '9':
@@ -83,11 +88,14 @@ def all_trumps_logic(player, coplayer):
                             break
 
             else:
+                #Играе белот, ако не влезе в един от горните случаи
                 if player.has_belote():
                     pos = player.get_index_by_value('Q')
                     player.throw_card(player.cards[pos])
+                #Играе '7', ако няма нищо
                 elif c.value == '7':
                     player.throw_card(c)
+                #Играе '8', ако няма нищо
                 elif c.value == '8':
                     player.throw_card(c)
 
@@ -101,9 +109,32 @@ def all_trumps_logic(player, coplayer):
 
 
 def no_trumps_logic(player, coplayer):
-    pass
+    if len(ALL_GIVEN_CARDS_IN_HAND) == 0:
+        for c in player.cards:
+            #Играе 'А', ако имаш 'А' и '10'(и повече) от една боя
+            if A_10_more(player.cards):
+                pos = player.get_index_by_value('A')
+                player.throw_card(player.cards[pos])
 
+            #Игра 10-ката ако Асака е минал
+            elif c.value == '10':
+                for x in ALL_GIVEN_CARDS:
+                    if x.value == 'A' and x.type == c.type:
+                        player.throw_card(c)
 
+                vals = player.get_all_values_of_one_type(c.type)
+                #Проверка дали 10-ката е тройна
+                if len(vals) >= 3:
+                    #Играе 'К'
+                    if 'K' in vals:
+                        pos = player.get_index_by_value('K')
+                        player.throw_card(player.card[pos])
+                    #Играе някоя от картите от боята на 10-ката с цел избиване на асак
+                    else:
+                        for v in vals:
+                            if v.value != '10'
+                            pos = player.get_index_by_value(v)
+                            player.throw_card(player.card[pos])
 
 def game_type_logic(game, player, coplayer):
     pass
