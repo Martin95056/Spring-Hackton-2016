@@ -14,7 +14,7 @@ class Player:
         return [c.type for c in self.cards]
 
     def card_values(self):
-        return [c.values for c in self.cards]
+        return [c.value for c in self.cards]
 
     def throw_card(self, card):
         self.cards.remove(card)
@@ -60,7 +60,7 @@ class Player:
             self.set_game('All Trumps')
 
         elif self.card_values().count('J') >= 2 and\
-                J_9_more(self.cards):
+                J_9_more(self):
             self.set_game('All Trumps')
 
         elif self.card_values().count('A') >= 3:
@@ -71,14 +71,14 @@ class Player:
             self.set_game('No Trumps')
 
         elif self.card_values().count('A') >= 2 and\
-                A_10_more(self.cards):
+                A_10_more(self):
             self.set_game('No Trumps')
 
         elif J_9_more(self.cards):
             pos1 = self.get_index_by_value('J')
             pos2 = self.get_index_by_value('A')
-            if self.card_types[pos1] != self.card_types[pos2]:
-                self.set_game(self.card_types[pos1])
+            if self.card_types()[pos1] != self.card_types()[pos2]:
+                self.set_game(self.card_types()[pos1])
 
         else:
             for c in CARD_TYPES:
