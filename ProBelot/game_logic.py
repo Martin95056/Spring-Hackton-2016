@@ -22,26 +22,26 @@ def A_10_more(player):
 
 
 def valid_values(player):
-    same_type = []
-    different_type = []
+    same_type_cards = []
+    different_type_cards = []
     for card in player.cards:
         if card.card_type == ALL_GIVEN_CARDS[0].card_type:
-            same_type.append(card)
+            same_type_cards.append(card)
         else:
-            different_type.append(card)
+            different_type_cards.append(card)
 
-    valid_cards = []
+    valid_cards_of_same_type = []
 
-    for card in same_type:
+    for card in same_type_cards:
         if card.get_index_by_value(pregame()) > ALL_GIVEN_CARDS[len(ALL_GIVEN_CARDS) - 1].get_index_by_value(pregame()):
-            valid_cards.append(card)
+            valid_cards_of_same_type.append(card)
 
-    if valid_cards >= 1:
-        return valid_cards
-    elif same_type >= 1:
-        return same_type
+    if valid_cards_of_same_type >= 1:
+        return valid_cards_of_same_type
+    elif same_type_cards >= 1:
+        return same_type_cards
     else:
-        return different_type
+        return different_type_cards
 
 
 def all_trumps_logic(player, coplayer):
