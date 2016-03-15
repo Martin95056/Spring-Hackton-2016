@@ -110,7 +110,9 @@ class Player:
 
 
 class Team:
-    def __init__(self):
+    def __init__(self, player, coplayer):
+        self.player = player
+        self.coplayer = coplayer
         self.result = 0
 
     def add_points(self, points):

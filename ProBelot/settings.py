@@ -3,6 +3,9 @@ import collections
 
 CARD_TYPES = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
 VALUES = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+BIDDINGS = ['Pass', 'Recontra', 'Contra',
+            'All Trumps', 'No Trumps',
+            'Spades', 'Hearts', 'Diamonds', 'Clubs']
 
 trump = {
     'A': 11,

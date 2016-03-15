@@ -1,4 +1,4 @@
-from settings import cards_values
+from settings import CARD_TYPES
 
 
 def J_9_more(player):
@@ -19,7 +19,7 @@ def A_10_more(player):
                     return True
 
 
-def first_card_all_trumps(player, coplayer):
+def all_trumps_logic(player, coplayer):
     for c in player.cards:
         if J_9_more(player.cards):
             pos = player.get_index_by_value('J')
@@ -63,3 +63,20 @@ def first_card_all_trumps(player, coplayer):
             #Приемам. че имам мега ебани карти и няма значение какво хвърлям
             else:
                 player.throw_card(c)
+
+
+def no_trumps_logic(player, coplayer):
+    pass
+
+
+def game_type_logic(game, player, coplayer):
+    pass
+
+
+def first_card(game, player, coplayer):
+    if game == 'All Trumps':
+        all_trumps_logic(player, coplayer)
+    elif game == 'No Trumps':
+        no_trumps_logic(player, coplayer)
+    elif game in CARD_TYPES:
+        game_type_logic(game, player, coplayer)
