@@ -1,3 +1,6 @@
+import collections
+
+
 CARD_TYPES = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
 VALUES = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
@@ -23,13 +26,15 @@ not_trump = {
     '7': 0,
 }
 
-card_value = {
-    '7': 0,
-    '8': 1,
-    '9': 2,
-    '10': 3,
-    'J': 4,
-    'Q': 5,
-    'K': 6,
-    'A': 7,
-}
+card_values_dict = (
+    ('7', 0),
+    ('8', 1),
+    ('9', 2),
+    ('10', 3),
+    ('J', 4),
+    ('Q', 5),
+    ('K', 6),
+    ('A', 7),
+)
+
+cards_values = collections.OrderedDict(card_values_dict)
