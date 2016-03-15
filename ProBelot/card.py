@@ -29,8 +29,11 @@ class Deck:
     def __init__(self):
         self.deck = [Card(v, t) for v in VALUES for t in CARD_TYPES]
 
-    def shuffle(self):
-        random.shuffle(self.deck)
+    def __getitem__(self, key):
+        return self.deck[key]
 
     def __str__(self):
         return str([str(c) for c in self.deck])
+
+    def shuffle(self):
+        random.shuffle(self.deck)
