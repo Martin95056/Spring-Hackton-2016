@@ -1,6 +1,6 @@
 from settings import CARD_TYPES
 from single_round import pregame
-from player import Player, ALL_GIVEN_CARDS
+from player import Player, ALL_GIVEN_CARDS, ALL_GIVEN_CARDS_IN_HAND
 
 
 def J_9_more(player):
@@ -25,7 +25,7 @@ def valid_values(player):
     same_type_cards = []
     different_type_cards = []
     for card in player.cards:
-        if card.card_type == ALL_GIVEN_CARDS[0].card_type:
+        if card.card_type == ALL_GIVEN_CARDS_IN_HAND[0].card_type:
             same_type_cards.append(card)
         else:
             different_type_cards.append(card)
@@ -33,7 +33,7 @@ def valid_values(player):
     valid_cards_of_same_type = []
 
     for card in same_type_cards:
-        if card.get_index_by_value(pregame()) > ALL_GIVEN_CARDS[len(ALL_GIVEN_CARDS) - 1].get_index_by_value(pregame()):
+        if card.get_index_by_value(pregame()) > ALL_GIVEN_CARDS_IN_HAND[len(ALL_GIVEN_CARDS_IN_HAND) - 1].get_index_by_value(pregame()):
             valid_cards_of_same_type.append(card)
 
     if valid_cards_of_same_type >= 1:
@@ -45,7 +45,8 @@ def valid_values(player):
 
 
 def all_trumps_logic(player, coplayer):
-    if len(ALL_GIVEN_CARDS) == 0:
+    # Когато играчът е пръв
+    if len(ALL_GIVEN_CARDS_IN_HAND) == 0:
         for c in player.cards:
             if J_9_more(player.cards):
                 pos = player.get_index_by_value('J')
@@ -59,6 +60,10 @@ def all_trumps_logic(player, coplayer):
 
             elif c.value == '9':
                 vals = player.get_all_values_of_one_type(c.type)
+
+                for x in ALL_GIVEN_CARDS:
+                    if x.value == 'J' and x.type == c.type:
+                        player.throw_card(c)
 
                 if len(vals) == 2:
                     if '10' in vals:
@@ -89,6 +94,7 @@ def all_trumps_logic(player, coplayer):
                 # Приемам. че имам мега ебани карти и няма значение какво хвърлям
                 else:
                     player.throw_card(c)
+    # Когато играчът не е пръв
     # foo e best_card
     else:
         player.throw_card(best_card(valid_values(player), 'All Trumps'))
@@ -96,6 +102,7 @@ def all_trumps_logic(player, coplayer):
 
 def no_trumps_logic(player, coplayer):
     pass
+
 
 
 def game_type_logic(game, player, coplayer):
