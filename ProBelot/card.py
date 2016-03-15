@@ -1,5 +1,5 @@
 from settings import trump, not_trump,\
-                      CARD_TYPES, VALUES
+    CARD_TYPES, VALUES
 import random
 
 
@@ -12,6 +12,9 @@ class Card:
 
     def __str__(self):
         return "'{}' of {}".format(self.value, self.type)
+
+    def __eq__(self, other):
+        return self.value == other.value and self.type == other.type
 
     def get_rate(self, game_str):
         if game_str == 'All Trumps':

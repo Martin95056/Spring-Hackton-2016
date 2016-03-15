@@ -45,49 +45,53 @@ def valid_values(player):
 
 
 def all_trumps_logic(player, coplayer):
-    for c in player.cards:
-        if J_9_more(player.cards):
-            pos = player.get_index_by_value('J')
-            player.throw_card(player.cards[pos])
-
-        elif player.has_cards_of_coplayer_game():
-            for v in player.get_all_values_of_one_type(coplayer.game_i_want):
-                pos = player.get_index_by_value(v)
+    if len(ALL_GIVEN_CARDS) == 0:
+        for c in player.cards:
+            if J_9_more(player.cards):
+                pos = player.get_index_by_value('J')
                 player.throw_card(player.cards[pos])
-                break
 
-        elif c.value == '9':
-            vals = player.get_all_values_of_one_type(c.type)
-
-            if len(vals) == 2:
-                if '10' in vals:
-                    pos = player.get_index_by_value('10')
+            elif player.has_cards_of_coplayer_game():
+                for v in player.get_all_values_of_one_type(coplayer.game_i_want):
+                    pos = player.get_index_by_value(v)
                     player.throw_card(player.cards[pos])
-                elif 'A' in vals:
-                    pos = player.get_index_by_value('A')
-                    player.throw_card(player.cards[pos])
-                else:
-                    continue
+                    break
 
-            elif len(vals) >= 3:
-                for v in vals:
-                    if v != '9':
-                        pos = player.get_index_by_value(v)
+            elif c.value == '9':
+                vals = player.get_all_values_of_one_type(c.type)
+
+                if len(vals) == 2:
+                    if '10' in vals:
+                        pos = player.get_index_by_value('10')
                         player.throw_card(player.cards[pos])
-                        break
+                    elif 'A' in vals:
+                        pos = player.get_index_by_value('A')
+                        player.throw_card(player.cards[pos])
+                    else:
+                        continue
 
-        else:
-            if player.has_belote():
-                pos = player.get_index_by_value('Q')
-                player.throw_card(player.cards[pos])
-            elif c.value == '7':
-                player.throw_card(c)
-            elif c.value == '8':
-                player.throw_card(c)
+                elif len(vals) >= 3:
+                    for v in vals:
+                        if v != '9':
+                            pos = player.get_index_by_value(v)
+                            player.throw_card(player.cards[pos])
+                            break
 
-            # Приемам. че имам мега ебани карти и няма значение какво хвърлям
             else:
-                player.throw_card(c)
+                if player.has_belote():
+                    pos = player.get_index_by_value('Q')
+                    player.throw_card(player.cards[pos])
+                elif c.value == '7':
+                    player.throw_card(c)
+                elif c.value == '8':
+                    player.throw_card(c)
+
+                # Приемам. че имам мега ебани карти и няма значение какво хвърлям
+                else:
+                    player.throw_card(c)
+    # foo e best_card
+    else:
+        player.throw_card(best_card(valid_values(player), 'All Trumps'))
 
 
 def no_trumps_logic(player, coplayer):
