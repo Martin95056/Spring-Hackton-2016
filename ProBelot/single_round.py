@@ -36,42 +36,63 @@ class Round:
     def pregame(self):
         self.set_pregame()
 
-        c1 = self.cpu1.pregame()
-        self.valid_games(c1)
-        c2 = self.cpu2.pregame()
-        self.valid_games(c2)
-        c3 = self.cpu3.pregame()
-        self.valid_games(c3)
-        c4 = self.cpu4.pregame()
-        self.valid_games(c4)
+        c1 = self.cpu1.pregame(self.games)
+        print(c1)
+        # self.valid_games(c1)
+        c2 = self.cpu2.pregame(self.games)
+        print(c2)
+        # self.valid_games(c2)
+        c3 = self.cpu3.pregame(self.games)
+        print(c3)
+        # self.valid_games(c3)
+        c4 = self.cpu4.pregame(self.games)
+        print(c4)
+        # self.valid_games(c4)
 
         if all([c == 'Pass' for c in [c1, c2, c3, c4]]):
             self.game_to_be_played = 'Pass'
 
         else:
-            BREAKER = 'Pass, Pass, Pass'
+            BREAKER = -1
             while True:
-                c1 = self.cpu1.pregame()
+                c1 = self.cpu1.pregame(self.games)
                 self.valid_games(c1)
-                if BREAKER in ', '.join([c1, c2, c3, c4]):
-                    self.game_to_be_played = c1
-                    break
-                c2 = self.cpu2.pregame()
-                self.valid_games(c2)
-                if BREAKER in ', '.join([c1, c2, c3, c4]):
+                if c1 == 'Pass':
+                    BREAKER += 1
+                else:
+                    BREAKER = 0
+                if BREAKER == 3:
                     self.game_to_be_played = c2
                     break
-                c3 = self.cpu3.pregame()
-                self.valid_games(c3)
-                if BREAKER in ', '.join([c1, c2, c3, c4]):
+
+                c2 = self.cpu2.pregame(self.games)
+                self.valid_games(c2)
+                if c2 == 'Pass':
+                    BREAKER += 1
+                else:
+                    BREAKER = 0
+                if BREAKER == 3:
                     self.game_to_be_played = c3
                     break
-                c4 = self.cpu4.pregame()
-                self.valid_games(c4)
-                if BREAKER in ', '.join([c1, c2, c3, c4]):
+                c3 = self.cpu3.pregame(self.games)
+                self.valid_games(c3)
+                if c3 == 'Pass':
+                    BREAKER += 1
+                else:
+                    BREAKER = 0
+                if BREAKER == 3:
                     self.game_to_be_played = c4
                     break
-
+                c4 = self.cpu4.pregame(self.games)
+                self.valid_games(c4)
+                if c4 == 'Pass':
+                    BREAKER += 1
+                else:
+                    BREAKER = 0
+                if BREAKER == 3:
+                    self.game_to_be_played = c1
+                    break
+            print(c1, c2, c3, c4)
         return self.game_to_be_played
 
     def set_rest_of_cards(self):

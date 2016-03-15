@@ -37,3 +37,7 @@ class Deck:
 
     def shuffle(self):
         random.shuffle(self.deck)
+
+    def remove(self, cards):
+        for c in cards:
+            self.deck.remove(c)
