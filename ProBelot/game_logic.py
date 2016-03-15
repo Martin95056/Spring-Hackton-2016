@@ -1,4 +1,6 @@
 from settings import CARD_TYPES
+from single_round import pregame
+from player import Player
 
 
 def J_9_more(player):
@@ -17,6 +19,29 @@ def A_10_more(player):
                 c1_pos = player.card_values().index('10')
                 if player.card_types()[c1_pos] == c.type:
                     return True
+
+def valid_values(current_player, next_player): 
+    same_type = []
+    different_type = []
+    for card in next_player.cards:
+        if card.card_type == current_player.given_cards[len(current_player.given_cards) - 1].card_type:
+            same_type.append(card)
+        else:
+            different_type.append(card)
+
+    valid_cards = []
+     
+    for card in same_type:
+        if card.get_index_by_value(pregame()) > current_player.given_cards[len(current_player.given_cards) - 1].get_index_by_value(pregame()):
+            valid_cards.append(card)
+
+    if valid_cards >= 1:
+        return valid_cards
+    elif same_type >= 1:
+        return same_type
+    else:
+        return different_type
+
 
 
 def all_trumps_logic(player, coplayer):
