@@ -1,21 +1,21 @@
 from settings import cards_values
 
 
-def J_9_more(cards):
-    for c in cards:
+def J_9_more(player):
+    for c in player.cards:
         if c.value == 'J':
-            if '9' in cards.card_values():
-                c1_pos = cards.card_values().index('9')
-                if cards.card_types[c1_pos] == c.type:
+            if '9' in player.card_values():
+                c1_pos = player.card_values().index('9')
+                if player.card_types()[c1_pos] == c.type:
                     return True
 
 
-def A_10_more(cards):
-    for c in cards:
+def A_10_more(player):
+    for c in player.cards:
         if c.value == 'A':
-            if '10' in cards.card_values():
-                c1_pos = cards.card_values().index('10')
-                if cards.card_types[c1_pos] == c.type:
+            if '10' in player.card_values():
+                c1_pos = player.card_values().index('10')
+                if player.card_types()[c1_pos] == c.type:
                     return True
 
 
