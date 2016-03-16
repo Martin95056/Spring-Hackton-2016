@@ -1,6 +1,5 @@
 from settings import CARD_TYPES
-from single_round import Round
-from player import Player, ALL_GIVEN_CARDS, ALL_GIVEN_CARDS_IN_HAND
+import player as p
 
 
 def J_9_more(player):
@@ -21,24 +20,27 @@ def A_10_more(player):
                     return True
 
 
-def valid_values(player, game_round):
+def valid_values(player, game):
     same_type_cards = []
     different_type_cards = []
     for card in player.cards:
-        if card.card_type == ALL_GIVEN_CARDS_IN_HAND[0].card_type:
+        if card.type == p.ALL_GIVEN_CARDS_ON_TABLE[0].type:
             same_type_cards.append(card)
         else:
             different_type_cards.append(card)
 
-    valid_cards_of_same_type = []
+    if game == 'No Trumps':
+        if len(same_type_cards) > 0:
+            return same_type_cards
+        else:
+            return different_type_cards
 
-    for card in same_type_cards:
-        if card.get_rate(game_round.game_to_be_played) > ALL_GIVEN_CARDS_IN_HAND[len(ALL_GIVEN_CARDS_IN_HAND) - 1].get_rate(game_round.game_to_be_played):
-            valid_cards_of_same_type.append(card)
+    result = [c for c in same_type_cards if
+              c.get_rate(game) > p.ALL_GIVEN_CARDS_ON_TABLE[-1].get_rate(game)]
 
-    if valid_cards_of_same_type >= 1:
-        return valid_cards_of_same_type
-    elif same_type_cards >= 1:
+    if len(result) >= 1:
+        return result
+    elif len(same_type_cards) >= 1:
         return same_type_cards
     else:
         return different_type_cards
@@ -46,7 +48,7 @@ def valid_values(player, game_round):
 
 def all_trumps_logic(player, coplayer):
     # Когато играчът е пръв
-    if len(ALL_GIVEN_CARDS_IN_HAND) == 0:
+    if len(p.ALL_GIVEN_CARDS_IN_HAND) == 0:
         for c in player.cards:
             # Играе 'А', ако имаш 'А' и '10'(и повече) от една боя
             if J_9_more(player.cards):
@@ -63,7 +65,7 @@ def all_trumps_logic(player, coplayer):
             elif c.value == '9':
 
                 # Играе 9-ката ако Валето е минало
-                for x in ALL_GIVEN_CARDS:
+                for x in p.ALL_GIVEN_CARDS:
                     if x.value == 'J' and x.type == c.type:
                         player.throw_card(c)
 
@@ -109,7 +111,7 @@ def all_trumps_logic(player, coplayer):
 
 
 def no_trumps_logic(player, coplayer):
-    if len(ALL_GIVEN_CARDS_IN_HAND) == 0:
+    if len(p.ALL_GIVEN_CARDS_IN_HAND) == 0:
         for c in player.cards:
             # Играе 'А', ако имаш 'А' и '10'(и повече) от една боя
             if A_10_more(player.cards):
@@ -118,7 +120,7 @@ def no_trumps_logic(player, coplayer):
 
             # Игра 10-ката ако Асака е минал
             elif c.value == '10':
-                for x in ALL_GIVEN_CARDS:
+                for x in p.ALL_GIVEN_CARDS:
                     if x.value == 'A' and x.type == c.type:
                         player.throw_card(c)
 
@@ -132,9 +134,9 @@ def no_trumps_logic(player, coplayer):
                     # Играе някоя от картите от боята на 10-ката с цел избиване на асак
                     else:
                         for v in vals:
-                            if v.value != '10'
-                            pos = player.get_index_by_value(v)
-                            player.throw_card(player.card[pos])
+                            if v.value != '10':
+                                pos = player.get_index_by_value(v)
+                                player.throw_card(player.card[pos])
 
 
 def game_type_logic(game, player, coplayer):

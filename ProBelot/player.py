@@ -1,8 +1,12 @@
 from game_logic import J_9_more, A_10_more
 from settings import CARD_TYPES
 
-ALL_GIVEN_CARDS_IN_HAND = []
+global ALL_GIVEN_CARDS_ON_TABLE
+global ALL_GIVEN_CARDS
+
 ALL_GIVEN_CARDS = []
+ALL_GIVEN_CARDS_ON_TABLE = []
+
 
 class Player:
     def __init__(self):
@@ -24,11 +28,11 @@ class Player:
 
         globals(ALL_GIVEN_CARDS).append(card)
         if len(globals(ALL_GIVEN_CARDS)) == 32:
-            globals(ALL_GIVEN_CARDS) = []
+            del globals(ALL_GIVEN_CARDS)[:]
 
-        globals(ALL_GIVEN_CARDS_IN_HAND).append(card)
-        if len(globals(ALL_GIVEN_CARDS_IN_HAND)) == 4:
-            globals(ALL_GIVEN_CARDS_IN_HAND) = []
+        globals(ALL_GIVEN_CARDS_ON_TABLE).append(card)
+        if len(globals(ALL_GIVEN_CARDS_ON_TABLE)) == 4:
+            del globals(ALL_GIVEN_CARDS_ON_TABLE)[:]
 
     def has_cards(self):
         return len(self.cards) > 0
