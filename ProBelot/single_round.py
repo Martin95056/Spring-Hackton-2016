@@ -1,4 +1,4 @@
-from player import Team
+from player import *
 from card import Deck
 from settings import BIDDINGS
 
@@ -16,8 +16,8 @@ class Round:
         self.games = BIDDINGS
         self.game_to_be_played = 'Pass'
 
-        self.team1 = Team(self.cpu1, self.cpu3)
-        self.team2 = Team(self.cpu2, self.cpu4)
+        self.team1 = player.Team(self.cpu1, self.cpu3)
+        self.team2 = player.Team(self.cpu2, self.cpu4)
 
     def valid_games(self, called):
         if called == 'Pass' or called not in self.games:
@@ -37,17 +37,9 @@ class Round:
         self.set_pregame()
 
         c1 = self.cpu1.pregame(self.games)
-        print(c1)
-        # self.valid_games(c1)
         c2 = self.cpu2.pregame(self.games)
-        print(c2)
-        # self.valid_games(c2)
         c3 = self.cpu3.pregame(self.games)
-        print(c3)
-        # self.valid_games(c3)
         c4 = self.cpu4.pregame(self.games)
-        print(c4)
-        # self.valid_games(c4)
 
         if all([c == 'Pass' for c in [c1, c2, c3, c4]]):
             self.game_to_be_played = 'Pass'
@@ -92,7 +84,6 @@ class Round:
                 if BREAKER == 3:
                     self.game_to_be_played = c1
                     break
-            print(c1, c2, c3, c4)
         return self.game_to_be_played
 
     def set_rest_of_cards(self):
