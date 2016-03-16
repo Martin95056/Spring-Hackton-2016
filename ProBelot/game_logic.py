@@ -33,7 +33,7 @@ def valid_values(player, game_round):
     valid_cards_of_same_type = []
 
     for card in same_type_cards:
-        if card.get_index_by_value(game_round.game_to_be_played) > ALL_GIVEN_CARDS_IN_HAND[len(ALL_GIVEN_CARDS_IN_HAND) - 1].get_index_by_value(game_round.game_to_be_played):
+        if card.get_rate(game_round.game_to_be_played) > ALL_GIVEN_CARDS_IN_HAND[len(ALL_GIVEN_CARDS_IN_HAND) - 1].get_rate(game_round.game_to_be_played):
             valid_cards_of_same_type.append(card)
 
     if valid_cards_of_same_type >= 1:
