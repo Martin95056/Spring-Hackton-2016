@@ -1,6 +1,5 @@
 from settings import CARD_TYPES
 import player as p
-from single_round import Round
 
 
 def J_9_more(player):
