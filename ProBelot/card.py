@@ -1,4 +1,4 @@
-from settings import trump, not_trump,\
+from settings import all_trumps_dic, no_trumps_dic,\
     CARD_TYPES, VALUES
 import random
 
@@ -18,14 +18,14 @@ class Card:
 
     def get_rate(self, game_str):
         if game_str == 'All Trumps':
-            return trump[self.value]
+            return all_trumps_dic[self.value]
         elif game_str == 'No Trumps':
-            return not_trump[self.value]
+            return no_trumps_dic[self.value]
         else:
             if game_str == self.type:
-                return trump[self.value]
+                return all_trumps_dic[self.value]
             else:
-                return not_trump[self.value]
+                return no_trumps_dic[self.value]
 
 
 class Deck:
