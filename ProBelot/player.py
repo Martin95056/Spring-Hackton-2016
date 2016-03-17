@@ -57,7 +57,10 @@ class Player:
                 return False
 
     def get_index_by_value(self, value):
-        return self.card_values().index(value)
+        try:
+            return self.card_values().index(value)
+        except ValueError:
+            return None
 
     def get_all_values_of_one_type(self, card_type):
         return [c.value for c in self.cards if c.type == card_type]
@@ -98,10 +101,11 @@ class Player:
         elif J_9_more(self):
             pos1 = self.get_index_by_value('J')
             pos2 = self.get_index_by_value('A')
-            if self.card_types()[pos1] != self.card_types()[pos2]:
-                self.set_game(self.card_types()[pos1])
-            elif self.card_types()[pos1] == self.card_types()[pos2]:
-                self.set_game(self.card_types()[pos1])
+            if pos2:
+                if self.card_types()[pos1] != self.card_types()[pos2]:
+                    self.set_game(self.card_types()[pos1])
+                elif self.card_types()[pos1] == self.card_types()[pos2]:
+                    self.set_game(self.card_types()[pos1])
 
         if self.game_i_want == '':
             for c in CARD_TYPES:
