@@ -149,32 +149,34 @@ def all_trumps_logic(player, coplayer):
                     return best_card(valid_values(player, 'All Trumps'),
                                      coplayer.game_i_want)
 
-                elif c.value == '9':
+                elif '9' in player.card_values():
 
-                    # Играе 9-ката ако Валето е минало
-                    for x in p.ALL_GIVEN_CARDS:
-                        if x.value == 'J' and x.type == c.type:
-                            return c
+                    if c.value == '9':
 
-                    vals = player.get_all_values_of_one_type(c.type)
-                    # Играе '10' или 'А', ако има двойна 9ка
-                    if len(vals) == 2:
-                        if '10' in vals:
-                            pos = player.get_index_by_value('10')
-                            return player.cards[pos]
-                        elif 'A' in vals:
-                            pos = player.get_index_by_value('A')
-                            return player.cards[pos]
-                        else:
-                            continue
+                        # Играе 9-ката ако Валето е минало
+                        for x in p.ALL_GIVEN_CARDS:
+                            if x.value == 'J' and x.type == c.type:
+                                return c
 
-                    # Играе някоя от картите от боята на 9-ката
-                    # с цел избиване на вале
-                    elif len(vals) >= 3:
-                        for v in vals:
-                            if v != '9':
-                                pos = player.get_index_by_value(v)
+                        vals = player.get_all_values_of_one_type(c.type)
+                        # Играе '10' или 'А', ако има двойна 9ка
+                        if len(vals) == 2:
+                            if '10' in vals:
+                                pos = player.get_index_by_value('10')
                                 return player.cards[pos]
+                            elif 'A' in vals:
+                                pos = player.get_index_by_value('A')
+                                return player.cards[pos]
+                            else:
+                                continue
+
+                        # Играе някоя от картите от боята на 9-ката
+                        # с цел избиване на вале
+                        elif len(vals) >= 3:
+                            for v in vals:
+                                if v != '9':
+                                    pos = player.get_index_by_value(v)
+                                    return player.cards[pos]
 
                 else:
                     # Играе белот, ако не влезе в един от горните случаи
@@ -212,31 +214,36 @@ def all_trumps_logic(player, coplayer):
     # Когато ние не сме вдигнали
     else:
         for c in player.cards:
-            if c.value == '9':
-                # Играе 9-ката ако Валето е минало
-                for x in p.ALL_GIVEN_CARDS:
-                    if x.value == 'J' and x.type == c.type:
-                        return c
+            if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
+                if c.value == '9':
+                    # Играе 9-ката ако Валето е минало
+                    for x in p.ALL_GIVEN_CARDS:
+                        if x.value == 'J' and x.type == c.type:
+                            return c
 
-                vals = player.get_all_values_of_one_type(c.type)
-                # Играе '10' или 'А', ако има двойна 9ка
-                if len(vals) == 2:
-                    if '10' in vals:
-                        pos = player.get_index_by_value('10')
-                        return player.cards[pos]
-                    elif 'A' in vals:
-                        pos = player.get_index_by_value('A')
-                        return player.cards[pos]
-                    else:
-                        continue
-
-                # Играе някоя от картите от боята на 9-ката
-                # с цел избиване на вале
-                elif len(vals) >= 3:
-                    for v in vals:
-                        if v != '9':
-                            pos = player.get_index_by_value(v)
+                    vals = player.get_all_values_of_one_type(c.type)
+                    # Играе '10' или 'А', ако има двойна 9ка
+                    if len(vals) == 2:
+                        if '10' in vals:
+                            pos = player.get_index_by_value('10')
                             return player.cards[pos]
+                        elif 'A' in vals:
+                            pos = player.get_index_by_value('A')
+                            return player.cards[pos]
+                        else:
+                            continue
+
+                    # Играе някоя от картите от боята на 9-ката
+                    # с цел избиване на вале
+                    elif len(vals) >= 3:
+                        for v in vals:
+                            if v != '9':
+                                pos = player.get_index_by_value(v)
+                                return player.cards[pos]
+                else:
+                    return best_card(valid_values(player, 'All Trumps'),
+                                     'All Trumps', rev=True)
+
             else:
                 return best_card(valid_values(player, 'All Trumps'),
                                  'All Trumps', rev=True)
