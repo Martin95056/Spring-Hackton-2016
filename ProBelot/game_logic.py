@@ -62,6 +62,7 @@ def solo_cards(player):
         return 'Diamonds'
     if len(clubs) + len(player_clubs) == 8:
         return 'Clubs'
+    return None
 
 
 def J_9_more(player):
@@ -70,7 +71,7 @@ def J_9_more(player):
             if '9' in player.card_values():
                 c1_pos = player.card_values().index('9')
                 if player.card_types()[c1_pos] == c.type:
-                    return True
+                    return [c, player.cards[c1_pos]]
 
 
 def J_A(player):
@@ -88,7 +89,7 @@ def A_10_more(player):
             if '10' in player.card_values():
                 c1_pos = player.card_values().index('10')
                 if player.card_types()[c1_pos] == c.type:
-                    return True
+                    return [c, player.cards[c1_pos]]
 
 
 def A_K(player):
@@ -128,73 +129,74 @@ def valid_values(player, game):
 
 
 def all_trumps_logic(player, coplayer):
-    # Когато ние сме вдигнали
+    # Kogato nie sme vdignali
     if player.game_i_want == 'All Trumps' or\
           coplayer.game_i_want == 'All Trumps':
 
-        # Когато играчът е пръв
+        # Kogato igrachat e prav
         if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
             for c in player.cards:
-                # Ако имам 'метър'
+                # Ako imam 'metar'
                 if solo_cards(player):
                     if c.type == solo_cards(player):
                         return c
-                # Играе 'J', ако имаш 'J' и '9'(и повече) от една боя
+                # Igrae J, ako imasj J i 9 ot edna boq (ili poveche)
                 elif J_9_more(player):
-                    pos = player.get_index_by_value('J')
-                    return player.cards[pos]
+                    return J_9_more(player)[0]
 
-                # Играе боята, която съотборникът му е казал
+                # Igrae boqta, koqto saotbarnika mu e kazal
                 elif player.has_cards_of_coplayer_game():
                     return best_card(valid_values(player, 'All Trumps'),
                                      coplayer.game_i_want)
 
-                elif c.value == '9':
+                elif '9' in player.card_values():
 
-                    # Играе 9-ката ако Валето е минало
-                    for x in p.ALL_GIVEN_CARDS:
-                        if x.value == 'J' and x.type == c.type:
-                            return c
+                    if c.value == '9':
 
-                    vals = player.get_all_values_of_one_type(c.type)
-                    # Играе '10' или 'А', ако има двойна 9ка
-                    if len(vals) == 2:
-                        if '10' in vals:
-                            pos = player.get_index_by_value('10')
-                            return player.cards[pos]
-                        elif 'A' in vals:
-                            pos = player.get_index_by_value('A')
-                            return player.cards[pos]
-                        else:
-                            continue
+                        # Igrae 9, ako J e minalo
+                        for x in p.ALL_GIVEN_CARDS:
+                            if x.value == 'J' and x.type == c.type:
+                                return c
 
-                    # Играе някоя от картите от боята на 9-ката
-                    # с цел избиване на вале
-                    elif len(vals) >= 3:
-                        for v in vals:
-                            if v != '9':
-                                pos = player.get_index_by_value(v)
+                        vals = player.get_all_values_of_one_type(c.type)
+                        # Igrae 10 ili A, ako ima dvoina 9ka
+                        if len(vals) == 2:
+                            if '10' in vals:
+                                pos = player.get_index_by_value('10')
                                 return player.cards[pos]
+                            elif 'A' in vals:
+                                pos = player.get_index_by_value('A')
+                                return player.cards[pos]
+                            else:
+                                continue
+
+                        # Igrae nqkoq ot kartite ot boqta na 9
+                        # s cel izbivane na J
+                        elif len(vals) >= 3:
+                            for v in vals:
+                                if v != '9':
+                                    pos = player.get_index_by_value(v)
+                                    return player.cards[pos]
 
                 else:
-                    # Играе белот, ако не влезе в един от горните случаи
+                    # Igrae belot
                     if player.has_belote():
                         pos = player.get_index_by_value('Q')
                         return player.cards[pos]
-                    # Играе '7', ако няма нищо
+                    # igrae 7
                     elif c.value == '7':
                         player.throw_card(c)
-                    # Играе '8', ако няма нищо
+                    # igrae 8
                     elif c.value == '8':
                         return c
 
-                    # Приемам. че имам мега ебани карти
+                    # Priemam, che imam mega ebani karti
                     else:
                         return c
 
-        # Когато не съм на ръка
+        # Kogato ne sam na raka
         else:
-            # Ако имам J и A от една боя
+            # J i A ot edna boq
             j_a = J_A(player)
             if j_a:
                 for c in player.cards:
@@ -209,34 +211,40 @@ def all_trumps_logic(player, coplayer):
                 return best_card(valid_values(player, 'All Trumps'),
                                  'All Trumps')
 
-    # Когато ние не сме вдигнали
+    # Kogato nie ne sme vdignali
     else:
         for c in player.cards:
-            if c.value == '9':
-                # Играе 9-ката ако Валето е минало
-                for x in p.ALL_GIVEN_CARDS:
-                    if x.value == 'J' and x.type == c.type:
-                        return c
+            if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
+                if '9' in player.card_values():
+                    if c.value == '9':
+                        # igrae 9, ako J e minalo
+                        for x in p.ALL_GIVEN_CARDS:
+                            if x.value == 'J' and x.type == c.type:
+                                return c
 
-                vals = player.get_all_values_of_one_type(c.type)
-                # Играе '10' или 'А', ако има двойна 9ка
-                if len(vals) == 2:
-                    if '10' in vals:
-                        pos = player.get_index_by_value('10')
-                        return player.cards[pos]
-                    elif 'A' in vals:
-                        pos = player.get_index_by_value('A')
-                        return player.cards[pos]
-                    else:
-                        continue
+                        vals = player.get_all_values_of_one_type(c.type)
+                        # igrae 10 ili A, ako ima dvoina 9ka
+                        if len(vals) == 2:
+                            if '10' in vals:
+                                pos = player.get_index_by_value('10')
+                                return player.cards[pos]
+                            elif 'A' in vals:
+                                pos = player.get_index_by_value('A')
+                                return player.cards[pos]
+                            else:
+                                continue
 
-                # Играе някоя от картите от боята на 9-ката
-                # с цел избиване на вале
-                elif len(vals) >= 3:
-                    for v in vals:
-                        if v != '9':
-                            pos = player.get_index_by_value(v)
-                            return player.cards[pos]
+                        # Igrae nqkoq ot kartite ot boqta na 9
+                        # s cel izbivane na J
+                        elif len(vals) >= 3:
+                            for v in vals:
+                                if v != '9':
+                                    pos = player.get_index_by_value(v)
+                                    return player.cards[pos]
+                else:
+                    return best_card(valid_values(player, 'All Trumps'),
+                                     'All Trumps', rev=True)
+
             else:
                 return best_card(valid_values(player, 'All Trumps'),
                                  'All Trumps', rev=True)
@@ -245,49 +253,61 @@ def all_trumps_logic(player, coplayer):
 def no_trumps_logic(player, coplayer):
     if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
         for c in player.cards:
-            # Ако имам 'метър'
+            # Ako ima 'metar'
             if solo_cards(player):
                 if c.type == solo_cards(player):
                     return c
-            # Играе 'А', ако имаш 'А' и '10'(и повече) от една боя
-            elif A_10_more(player.cards):
-                pos = player.get_index_by_value('A')
-                return player.cards[pos]
+            # Igrae A, ako ima A, 10 i poveche
+            elif A_10_more(player):
+                return A_10_more(player)[0]
 
-            elif c.value == '10':
-                # Игра 10-ката ако Асака е минал
-                for x in p.ALL_GIVEN_CARDS:
-                    if x.value == 'A' and x.type == c.type:
-                        return c
+            elif '10' in player.card_values():
 
-                vals = player.get_all_values_of_one_type(c.type)
-                # Проверка дали 10-ката е тройна
-                if len(vals) >= 3:
-                    # Играе 'К'
-                    if 'K' in vals:
-                        pos = player.get_index_by_value('K')
-                        return player.card[pos]
+                if c.value == '10':
+                    # Igrae 10, ako A e minal
+                    for x in p.ALL_GIVEN_CARDS:
+                        if x.value == 'A' and x.type == c.type:
+                            return c
 
-                    # Играе някоя от картите от боята на 10-ката
-                    # с цел избиване на асак
-                    else:
-                        for v in vals:
-                            if v.value != '10':
-                                pos = player.get_index_by_value(v)
-                                return player.card[pos]
+                    vals = player.get_all_values_of_one_type(c.type)
+                    # proverka za troina 10ka
+                    if len(vals) >= 3:
+                        # igrae K
+                        if 'K' in vals:
+                            pos = player.get_index_by_value('K')
+                            return player.card[pos]
 
-    # Когато не съм на ръка
+                        # igrae nqkoq ot kartite na 10kata
+                        # s cel izbivane na A
+                        else:
+                            for v in vals:
+                                if v.value != '10':
+                                    pos = player.get_index_by_value(v)
+                                    return player.card[pos]
+            else:
+                return best_card(player.cards,
+                                 'No Trumps', rev=True)
+
+    # kogato ne sam na raka
     else:
-        # Ако имам А и К от една боя
+        # Ako imam A i K ot edna boq
         a_k = A_K(player)
         if a_k:
             for c in player.cards:
                 for i in range(len(p.ALL_GIVEN_CARDS)):
                     if p.ALL_GIVEN_CARDS[i].value == '10' and\
                             p.ALL_GIVEN_CARDS[i].type == a_k[0].type:
-                                return a_k[0]
+                                if a_k[0] in valid_values(player, 'No Trumps'):
+                                    return a_k[0]
+                                else:
+                                    return best_card(valid_values(player, 'No Trumps'),
+                                                     'No Trumps')
                     else:
-                        return a_k[1]
+                        if a_k[1] in valid_values(player, 'No Trumps'):
+                                    return a_k[1]
+                        else:
+                            return best_card(valid_values(player, 'No Trumps'),
+                                             'No Trumps')
 
         else:
             return best_card(valid_values(player, 'No Trumps'),
@@ -303,45 +323,45 @@ def played_trumps(game):
 
 
 def game_type_logic(game, player, coplayer):
-    # Kогато съотборникът му е казал
+    # ako coplayer e kazal
     if coplayer.game_i_want == game:
         if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
-            # Проверявя дали играчът има козове
+            # proverka dali imam kozove
             if len(player.trumps(game)) != 0:
-                # Проверявя дали играчът започва играта и дава коз
+                # ako zapochvam, davam koz
                 if len(p.ALL_GIVEN_CARDS) == 0:
                     return best_card(valid_values(player, game),
                                      game)
-                # Ако не са играни козове, ще хвърли коз
+                # ako ne igrani kozove, shte hvarli koz
                 elif len(played_trumps(game)) == 0:
                     return best_card(valid_values(player, game),
                                      game)
-            # Ако няма, ще играе без коз
+            # ako nqma, igrae bez koz
             else:
                 return best_card(valid_values(player, game),
                                  'No Trumps')
-        # Когато играчът не е на ръка
+        # kogato ne sam na raka
         else:
-            # Ако се иска коз
+            # Ako se iska koz
             if p.ALL_GIVEN_CARDS_ON_TABLE[0].type == game:
                 return best_card(valid_values(player, game), game)
-            # Ако няма коз
+            # Ako nqma koz
             else:
                 return best_card(player.cards)
-    # Когато аз съм вдигнал:
+    # Kogato az sam vdignal
     elif player.game_i_want == game:
         if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
             if len(p.ALL_GIVEN_CARDS) == 0:
-                # Ако съм на ръка давам 'J'
+                # Ako sam na raka davam J
                 for c in played_trumps(game):
                     if c.value == 'J':
                         return c
-                # Ако нямам 'J', давам коз, който не '9'
+                # ako nqmam J, davam koz, osven 9
                 else:
                     return best_card(valid_values(player, game),
                                      game)
             else:
-                # Ако са свършили козовете игра без коз
+                # ako sa svarshili kozovete, igraq Bez koz
                 if len(player.trumps(game)) == 0:
                     return best_card(valid_values(player, game),
                                      'No Trumps')
@@ -352,14 +372,14 @@ def game_type_logic(game, player, coplayer):
                     else:
                         return best_card(valid_values(player, game),
                                          'No Trumps')
-        # Вдигнал съм, но не съм на ръка
+        # Vdignal sam, no ne sam na raka
         else:
             return best_card(valid_values(player, game), game)
-    # Ако другият отбор е вдигнал
+    # Ako dr otbor e vdignal
     else:
-        # Ако съм първи-играя по логиката на без коз
+        # ako sam parvi - Bez koz
         if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
-            # Играя по логика на Без коза, но не давам коз
+            # igraq po logika na Bez koz, no ne davam koz
             to_be_played = [c for c in player.cards if c.type == game]
             return best_card(to_be_played, 'No Trumps')
         else:
