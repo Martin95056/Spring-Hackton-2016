@@ -16,6 +16,9 @@ class Player:
 
         self.game_i_want = ''
 
+    def trumps(self, game):
+        return [c for c in self.cards if c.type == game]
+
     def card_types(self):
         return [c.type for c in self.cards]
 

@@ -6,7 +6,7 @@ BIDDINGS = ['Pass', 'Recontra', 'Contra',
             'All Trumps', 'No Trumps',
             'Spades', 'Hearts', 'Diamonds', 'Clubs']
 
-trump = {
+all_trumps_dic = {
     'A': 11,
     'K': 4,
     'Q': 3,
@@ -17,7 +17,7 @@ trump = {
     '7': 0,
 }
 
-not_trump = {
+no_trumps_dic = {
     'A': 11,
     'K': 4,
     'Q': 3,
