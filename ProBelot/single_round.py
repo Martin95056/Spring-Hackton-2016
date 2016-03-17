@@ -1,6 +1,7 @@
-from player import *
-from card import Deck
-from settings import BIDDINGS
+import player as p
+from card import Card, Deck
+from settings import BIDDINGS, CARD_TYPES, all_trumps_dic, no_trumps_dic
+from game_logic import all_trumps_logic, no_trumps_logic, game_type_logic
 
 
 class Round:
@@ -16,8 +17,10 @@ class Round:
         self.games = BIDDINGS
         self.game_to_be_played = 'Pass'
 
-        self.team1 = player.Team(self.cpu1, self.cpu3)
-        self.team2 = player.Team(self.cpu2, self.cpu4)
+        self.team1 = p.Team(self.cpu1, self.cpu3)
+        self.team2 = p.Team(self.cpu2, self.cpu4)
+
+        self.single_hand = [self.cpu1, self.cpu2, self.cpu3, self.cpu4]
 
     def valid_games(self, called):
         if called == 'Pass' or called not in self.games:
@@ -93,8 +96,113 @@ class Round:
         self.cpu4.add_cards(self.deck[9:12])
         self.deck.remove(self.deck[0:12])
 
+    def reorder(self, index):
+        return self.single_hand[index:] + self.single_hand[:index]
+
+    def take_cards(self):
+        curr_type = p.ALL_GIVEN_CARDS_ON_TABLE[0]
+        if self.game_to_be_played == 'All Trumps':
+            a = [all_trumps_dic[x.value] for x in p.ALL_GIVEN_CARDS_ON_TABLE if x.type == curr_type]
+            c = Card(max(a), curr_type)
+            i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c)
+            if i == 0:
+                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+            elif i == 1:
+                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+            elif i == 2:
+                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+            else:
+                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+        elif self.game_to_be_played == 'No Trumps':
+            a = [no_trumps_dic[x.value] for x in p.ALL_GIVEN_CARDS_ON_TABLE if x.type == curr_type]
+            c = Card(max(a), curr_type)
+            i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c)
+            if i == 0:
+                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+            elif i == 1:
+                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+            elif i == 2:
+                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+            else:
+                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+        else:
+            if all([x.type != self.game_to_be_played for x in p.ALL_GIVEN_CARDS_ON_TABLE]):
+                a = [no_trumps_dic[x.value]
+                     for x in p.ALL_GIVEN_CARDS_ON_TABLE if x.type == curr_type]
+                c = Card(max(a), curr_type)
+                i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c)
+                if i == 0:
+                    self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+                elif i == 1:
+                    self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+                elif i == 2:
+                    self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+                else:
+                    self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+            else:
+                curr_type == self.game_to_be_played
+                a = [all_trumps_dic[x.value]
+                     for x in p.ALL_GIVEN_CARDS_ON_TABLE if x.type == curr_type]
+                c = Card(max(a), curr_type)
+                i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c)
+                if i == 0:
+                    self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+                elif i == 1:
+                    self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+                elif i == 2:
+                    self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+                else:
+                    self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+
+            return i
+
     def game_on(self):
         self.pregame()
         self.set_rest_of_cards()
+        cur_res1 = 0
+        cur_res2 = 0
+        while len(p.ALL_GIVEN_CARDS) <= 32:
+            if self.game_to_be_played == 'All Trumps':
+                self.team1.player.throw_card(
+                    all_trumps_logic(self.team1.player, self.team1.coplayer))
+                self.team2.player.throw_card(
+                    all_trumps_logic(self.team2.player, self.team2.coplayer))
+                self.team1.coplayer.throw_card(
+                    all_trumps_logic(self.team1.coplayer, self.team1.player))
+                self.team2.coplayer.throw_card(
+                    all_trumps_logic(self.team2.coplayer, self.team2.player))
 
-        pass
+            elif self.game_to_be_played == 'No Trumps':
+                self.team1.player.throw_card(
+                    no_trumps_logic(self.team1.player, self.team1.coplayer))
+                self.team2.player.throw_card(
+                    no_trumps_logic(self.team2.player, self.team2.coplayer))
+                self.team1.coplayer.throw_card(
+                    no_trumps_logic(self.team1.coplayer, self.team1.player))
+                self.team2.coplayer.throw_card(
+                    no_trumps_logic(self.team2.coplayer, self.team2.player))
+
+            elif self.game_to_be_played in CARD_TYPES:
+                self.team1.player.throw_card(
+                    game_type_logic(self.game_to_be_played, self.team1.player, self.team1.coplayer))
+                self.team2.player.throw_card(
+                    game_type_logic(self.game_to_be_played, self.team2.player, self.team2.coplayer))
+                self.team1.coplayer.throw_card(
+                    game_type_logic(self.game_to_be_played, self.team1.coplayer, self.team1.player))
+                self.team2.coplayer.throw_card(
+                    game_type_logic(self.game_to_be_played, self.team2.coplayer, self.team2.player))
+
+            else:
+                break
+
+            winner = self.take_cards()
+            if winner == 0 or winner == 2:
+                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+                self.reorder(winner)
+                cur_res1 += self.team1.cards_to_points()
+            else:
+                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+                self.reorder(winner)
+                cur_res2 += self.team2.cards_to_points()
+            if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 4:
+                del p.ALL_GIVEN_CARDS_ON_TABLE[:]

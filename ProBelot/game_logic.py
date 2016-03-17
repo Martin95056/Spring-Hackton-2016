@@ -185,7 +185,7 @@ def all_trumps_logic(player, coplayer):
                         return player.cards[pos]
                     # igrae 7
                     elif c.value == '7':
-                        player.throw_card(c)
+                        return c
                     # igrae 8
                     elif c.value == '8':
                         return c
@@ -281,7 +281,7 @@ def no_trumps_logic(player, coplayer):
                         # s cel izbivane na A
                         else:
                             for v in vals:
-                                if v.value != '10':
+                                if v != '10':
                                     pos = player.get_index_by_value(v)
                                     return player.card[pos]
             else:

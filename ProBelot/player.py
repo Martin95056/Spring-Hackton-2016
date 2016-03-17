@@ -1,5 +1,5 @@
 from game_logic import J_9_more, A_10_more
-from settings import CARD_TYPES
+from settings import CARD_TYPES, all_trumps_dic, no_trumps_dic
 
 global ALL_GIVEN_CARDS_ON_TABLE
 global ALL_GIVEN_CARDS
@@ -134,7 +134,22 @@ class Team:
     def __init__(self, player, coplayer):
         self.player = player
         self.coplayer = coplayer
-        self.result = 0
+        self.taken_cards = []
 
-    def add_points(self, points):
-        self.result += points
+    def take_hand(self, cards):
+        self.taken_cards.extend(cards)
+
+    def cards_to_points(self, game):
+        result = 0
+        for card in self.taken_cards:
+            if game == 'All Trumps':
+                result += all_trumps_dic[card.value]
+            elif game == 'No Trumps':
+                result += no_trumps_dic[card.value]
+            else:
+                if card.value == game:
+                    result += all_trumps_dic[card.value]
+                else:
+                    result += no_trumps_dic[card.value]
+
+        return result

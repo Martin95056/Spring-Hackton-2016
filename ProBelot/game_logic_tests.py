@@ -109,7 +109,7 @@ class GameLogicTests(unittest.TestCase):
         clubs8 = Card('7', 'Clubs')
         random_c1 = Card('A', 'Hearts')
         random_c2 = Card('K', 'Hearts')
- 
+
         ALL_GIVEN_CARDS.append(clubs1)
         ALL_GIVEN_CARDS.append(clubs2)
         ALL_GIVEN_CARDS.append(clubs3)
