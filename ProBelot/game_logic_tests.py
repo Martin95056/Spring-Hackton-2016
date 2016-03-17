@@ -1,12 +1,15 @@
 import unittest
 from player import Player, ALL_GIVEN_CARDS_ON_TABLE, ALL_GIVEN_CARDS
-from game_logic import valid_values, solo_cards
+from game_logic import valid_values, solo_cards,\
+                        all_trumps_logic
 from card import Card
 
 
 class GameLogicTests(unittest.TestCase):
     def setUp(self):
         self.player = Player()
+        self.coplayer = Player()
+        self.player.coplayer = self.coplayer
 
     def test_valid_values_all_trumps(self):
         del ALL_GIVEN_CARDS_ON_TABLE[:]
@@ -117,6 +120,79 @@ class GameLogicTests(unittest.TestCase):
 
         self.assertEqual('Clubs', solo_cards(self.player))
 
+    def test_all_trumps_logic_Im_first_1hand(self):
+        del ALL_GIVEN_CARDS_ON_TABLE[:]
+        del ALL_GIVEN_CARDS[:]
+        self.player.game_i_want = 'All Trumps'
+
+        mycard1 = Card('J', 'Diamonds')
+        mycard2 = Card('K', 'Diamonds')
+        mycard3 = Card('Q', 'Diamonds')
+        mycard4 = Card('9', 'Diamonds')
+        mycard5 = Card('J', 'Hearts')
+        mycard6 = Card('K', 'Hearts')
+        mycard7 = Card('J', 'Spades')
+        mycard8 = Card('Q', 'Clubs')
+        self.player.cards = [mycard5, mycard2, mycard3, mycard4,
+                             mycard1, mycard6, mycard7, mycard8]
+
+        self.assertEqual('J',
+                         all_trumps_logic(self.player, self.coplayer).value)
+
+    def test_all_trumps_logic_Im_first_2hand(self):
+        del ALL_GIVEN_CARDS_ON_TABLE[:]
+        del ALL_GIVEN_CARDS[:]
+        self.player.game_i_want = 'All Trumps'
+
+        mycard1 = Card('J', 'Diamonds')
+        mycard2 = Card('K', 'Diamonds')
+        mycard3 = Card('Q', 'Diamonds')
+        mycard4 = Card('9', 'Diamonds')
+        mycard5 = Card('J', 'Hearts')
+        mycard6 = Card('K', 'Hearts')
+        mycard7 = Card('J', 'Spades')
+        mycard8 = Card('Q', 'Clubs')
+        self.player.cards = [mycard2, mycard3, mycard4,
+                             mycard1, mycard6, mycard7, mycard8]
+
+        othercard1 = Card('Q', 'Hearts')
+        othercard2 = Card('7', 'Hearts')
+        othercard3 = Card('A', 'Hearts')
+        ALL_GIVEN_CARDS.extend([mycard5, othercard1, othercard2, othercard3])
+
+        self.assertEqual('J',
+                         all_trumps_logic(self.player, self.coplayer).value)
+
+    def test_all_trumps_logic_Im_first_3hand(self):
+        del ALL_GIVEN_CARDS_ON_TABLE[:]
+        del ALL_GIVEN_CARDS[:]
+        self.player.game_i_want = 'All Trumps'
+
+        mycard1 = Card('J', 'Diamonds')
+        mycard2 = Card('K', 'Diamonds')
+        mycard3 = Card('Q', 'Diamonds')
+        mycard4 = Card('9', 'Diamonds')
+        mycard5 = Card('J', 'Hearts')
+        mycard6 = Card('K', 'Hearts')
+        mycard7 = Card('J', 'Spades')
+        mycard8 = Card('Q', 'Clubs')
+        self.player.cards = [mycard2, mycard3, mycard4,
+                             mycard6, mycard7, mycard8]
+
+        othercard1 = Card('Q', 'Hearts')
+        othercard2 = Card('7', 'Hearts')
+        othercard3 = Card('A', 'Hearts')
+        othercard4 = Card('10', 'Diamonds')
+        othercard5 = Card('9', 'Clubs')
+        othercard6 = Card('7', 'Diamonds')
+
+        ALL_GIVEN_CARDS.extend([mycard5, othercard1, othercard2, othercard3,
+                                mycard1, othercard4, othercard5, othercard6])
+
+        print(all_trumps_logic(self.player, self.coplayer).type)
+
+        self.assertEqual('9',
+                         all_trumps_logic(self.player, self.coplayer).value)
 
 if __name__ == '__main__':
     unittest.main()
