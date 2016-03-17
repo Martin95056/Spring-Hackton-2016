@@ -62,6 +62,7 @@ def solo_cards(player):
         return 'Diamonds'
     if len(clubs) + len(player_clubs) == 8:
         return 'Clubs'
+    return None
 
 
 def J_9_more(player):
@@ -70,7 +71,7 @@ def J_9_more(player):
             if '9' in player.card_values():
                 c1_pos = player.card_values().index('9')
                 if player.card_types()[c1_pos] == c.type:
-                    return True
+                    return [c, player.cards[c1_pos]]
 
 
 def J_A(player):
@@ -88,7 +89,7 @@ def A_10_more(player):
             if '10' in player.card_values():
                 c1_pos = player.card_values().index('10')
                 if player.card_types()[c1_pos] == c.type:
-                    return True
+                    return [c, player.cards[c1_pos]]
 
 
 def A_K(player):
@@ -141,8 +142,7 @@ def all_trumps_logic(player, coplayer):
                         return c
                 # Igrae J, ako imasj J i 9 ot edna boq (ili poveche)
                 elif J_9_more(player):
-                    pos = player.get_index_by_value('J')
-                    return player.cards[pos]
+                    return J_9_more(player)[0]
 
                 # Igrae boqta, koqto saotbarnika mu e kazal
                 elif player.has_cards_of_coplayer_game():
@@ -258,44 +258,56 @@ def no_trumps_logic(player, coplayer):
                 if c.type == solo_cards(player):
                     return c
             # Igrae A, ako ima A, 10 i poveche
-            elif A_10_more(player.cards):
-                pos = player.get_index_by_value('A')
-                return player.cards[pos]
+            elif A_10_more(player):
+                return A_10_more(player)[0]
 
-            elif c.value == '10':
-                # Igrae 10, ako A e minal
-                for x in p.ALL_GIVEN_CARDS:
-                    if x.value == 'A' and x.type == c.type:
-                        return c
+            elif '10' in player.card_values():
 
-                vals = player.get_all_values_of_one_type(c.type)
-                # proverka za troina 10ka
-                if len(vals) >= 3:
-                    # igrae K
-                    if 'K' in vals:
-                        pos = player.get_index_by_value('K')
-                        return player.card[pos]
+                if c.value == '10':
+                    # Igrae 10, ako A e minal
+                    for x in p.ALL_GIVEN_CARDS:
+                        if x.value == 'A' and x.type == c.type:
+                            return c
 
-                    # igrae nqkoq ot kartite na 10kata
-                    # s cel izbivane na A
-                    else:
-                        for v in vals:
-                            if v.value != '10':
-                                pos = player.get_index_by_value(v)
-                                return player.card[pos]
+                    vals = player.get_all_values_of_one_type(c.type)
+                    # proverka za troina 10ka
+                    if len(vals) >= 3:
+                        # igrae K
+                        if 'K' in vals:
+                            pos = player.get_index_by_value('K')
+                            return player.card[pos]
+
+                        # igrae nqkoq ot kartite na 10kata
+                        # s cel izbivane na A
+                        else:
+                            for v in vals:
+                                if v.value != '10':
+                                    pos = player.get_index_by_value(v)
+                                    return player.card[pos]
+            else:
+                return best_card(player.cards,
+                                 'No Trumps', rev=True)
 
     # kogato ne sam na raka
     else:
-        # Ako imam A i 10 ot edna boq
+        # Ako imam A i K ot edna boq
         a_k = A_K(player)
         if a_k:
             for c in player.cards:
                 for i in range(len(p.ALL_GIVEN_CARDS)):
                     if p.ALL_GIVEN_CARDS[i].value == '10' and\
                             p.ALL_GIVEN_CARDS[i].type == a_k[0].type:
-                                return a_k[0]
+                                if a_k[0] in valid_values(player, 'No Trumps'):
+                                    return a_k[0]
+                                else:
+                                    return best_card(valid_values(player, 'No Trumps'),
+                                                     'No Trumps')
                     else:
-                        return a_k[1]
+                        if a_k[1] in valid_values(player, 'No Trumps'):
+                                    return a_k[1]
+                        else:
+                            return best_card(valid_values(player, 'No Trumps'),
+                                             'No Trumps')
 
         else:
             return best_card(valid_values(player, 'No Trumps'),
