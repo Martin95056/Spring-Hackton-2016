@@ -11,9 +11,12 @@ public class CardSorter {
 
 				if (firstCard.getTrumpValue() < secondCard.getTrumpValue())
 					return 1;
-				else if (firstCard.getTrumpValue() == secondCard.getTrumpValue())
-					return 0;
-				else
+				else if (firstCard.getTrumpValue() == secondCard.getTrumpValue()) {
+					if (Integer.parseInt(firstCard.getValue()) < Integer.parseInt(secondCard.getValue()))
+						return 1;
+					else
+						return -1;
+				} else
 					return -1;
 			}
 
@@ -28,16 +31,21 @@ public class CardSorter {
 			public int compare(Card firstCard, Card secondCard) {
 				if (firstCard.getNonTrumpValue() < secondCard.getNonTrumpValue())
 					return 1;
-				else if (firstCard.getNonTrumpValue() == secondCard.getNonTrumpValue())
-					return 0;
-				else
+				// 8 of clubs is > than 7 of clubs, not equal
+				else if (firstCard.getNonTrumpValue() == secondCard.getNonTrumpValue()) {
+					if (Integer.parseInt(firstCard.getValue()) < Integer.parseInt(secondCard.getValue()))
+						return 1;
+					else
+						return -1;
+				} else
 					return -1;
 			}
 
 		};
 		cards.sort(nonTrumpCompare);
 	}
-	//Splits the cards into 4 arrays (clubs, diamonds, hearts, spades)
+
+	// Splits the cards into 4 arrays (clubs, diamonds, hearts, spades)
 	private static ArrayList<ArrayList<Card>> splitInSuits(ArrayList<Card> cards) {
 		ArrayList<Card> clubs = new ArrayList<Card>();
 		ArrayList<Card> diamonds = new ArrayList<Card>();
@@ -71,6 +79,7 @@ public class CardSorter {
 		}
 
 	}
+
 	private static void eightCardsSorter(ArrayList<Card> cards, String contract) {
 		ArrayList<ArrayList<Card>> splitted = splitInSuits(cards);
 		cards.clear();
@@ -97,13 +106,15 @@ public class CardSorter {
 			splittedIterator++;
 		}
 	}
-	//By default (if no contract is present) sorts the cards as if the contract is All Trumps
-	public static void sort(ArrayList<Card> cards) {
+
+	// By default (if no contract is present) sorts the cards as if the contract
+	// is All Trumps
+	public static void defaultSort(ArrayList<Card> cards) {
 
 		trumpCardsSorter(cards);
 
 	}
-	
+
 	public static void sort(ArrayList<Card> cards, String contract) {
 		if (contract.equals("All Trumps"))
 			trumpCardsSorter(cards);

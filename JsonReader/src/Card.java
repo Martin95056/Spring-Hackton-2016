@@ -1,24 +1,23 @@
+
 public class Card {
 	private String value;
 	private String suit;
-	private int trumpValue;
-	private int nonTrumpValue;
+	PairValues pairValues;
 
-	public Card(String value, String suit, int trumpValue, int nonTrumpValue) {
+	public Card(String value, String suit) {
 		super();
 		this.value = value;
 		this.suit = suit;
-		this.trumpValue = trumpValue;
-		this.nonTrumpValue = nonTrumpValue;
-		
+		pairValues = CardPairValues.getInstance().getMap().get(value);
+
 	}
 
 	public int getTrumpValue() {
-		return trumpValue;
+		return pairValues.getTrumpValue();
 	}
 
 	public int getNonTrumpValue() {
-		return nonTrumpValue;
+		return pairValues.getNonTrumpValue();
 	}
 
 	public String getValue() {
@@ -28,12 +27,23 @@ public class Card {
 	public String getSuit() {
 		return suit;
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return value + " of " + suit;
 	}
 
+	@Override
+	public boolean equals(Object card) {
+		if (card == null)
+			return false;
+		if (!(card instanceof Card))
+			return false;
+		Card cast = (Card) card;
+		if (cast.getSuit() == suit && cast.getValue() == value)
+			return true;
+		else
+			return false;
+	}
 
 }
