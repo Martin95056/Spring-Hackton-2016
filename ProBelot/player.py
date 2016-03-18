@@ -1,5 +1,6 @@
 from game_logic import J_9_more, A_10_more
 from settings import CARD_TYPES, card_values_dict
+from settings import all_trumps_dic, no_trumps_dic
 
 global ALL_GIVEN_CARDS_ON_TABLE
 global ALL_GIVEN_CARDS
@@ -26,16 +27,18 @@ class Player:
         return [c.value for c in self.cards]
 
     def throw_card(self, card):
+        print('FIRGAM KIRTA')
+        print(str(card))
+        print('FIRGNAL SAMGA')
         self.cards.remove(card)
         self.given_cards.append(card)
 
-        globals(ALL_GIVEN_CARDS).append(card)
-        if len(globals(ALL_GIVEN_CARDS)) == 32:
-            del globals(ALL_GIVEN_CARDS)[:]
+        ALL_GIVEN_CARDS.append(card)
 
-        globals(ALL_GIVEN_CARDS_ON_TABLE).append(card)
-        if len(globals(ALL_GIVEN_CARDS_ON_TABLE)) == 4:
-            del globals(ALL_GIVEN_CARDS_ON_TABLE)[:]
+        ALL_GIVEN_CARDS_ON_TABLE.append(card)
+
+        print([str(x) for x in ALL_GIVEN_CARDS])
+        print([str(x) for x in ALL_GIVEN_CARDS_ON_TABLE])
 
     def has_cards(self):
         return len(self.cards) > 0
@@ -264,7 +267,22 @@ class Team:
     def __init__(self, player, coplayer):
         self.player = player
         self.coplayer = coplayer
-        self.result = 0
+        self.taken_cards = []
 
-    def add_points(self, points):
-        self.result += points
+    def take_hand(self, cards):
+        self.taken_cards.extend(cards)
+
+    def cards_to_points(self, game):
+        result = 0
+        for card in self.taken_cards:
+            if game == 'All Trumps':
+                result += all_trumps_dic[card.value]
+            elif game == 'No Trumps':
+                result += no_trumps_dic[card.value]
+            else:
+                if card.value == game:
+                    result += all_trumps_dic[card.value]
+                else:
+                    result += no_trumps_dic[card.value]
+
+        return result
