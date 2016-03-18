@@ -231,6 +231,19 @@ class PlayerTests(unittest.TestCase):
         self.test_player.cards = [card1, card2, card3, card4, card5]
         self.assertFalse(self.test_player.has_belote())
 
+    def test_has_announce(self):
+        card1 = Card('8', 'Hearts')
+        card2 = Card('7', 'Hearts')
+        card3 = Card('9', 'Hearts')
+        card4 = Card('10', 'Diamonds')
+        card5 = Card('K', 'Hearts')
+        card6 = Card('J', 'Diamonds')
+        card7 = Card('Q', 'Hearts')
+        card8 = Card('A', 'Hearts')
+        self.test_player.cards = [card1, card2, card3, card4, card5, card6, card7, card8]
+        self.assertEqual(self.test_player.has_announce())
+
+
 
 if __name__ == '__main__':
     unittest.main()
