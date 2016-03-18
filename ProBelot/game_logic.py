@@ -333,6 +333,7 @@ def played_trumps(game):
 def game_type_logic(game, player, coplayer):
     # ako coplayer e kazal
     if coplayer.game_i_want == game:
+        
         if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
             # proverka dali imam kozove
             if len(player.trumps(game)) != 0:
@@ -358,13 +359,16 @@ def game_type_logic(game, player, coplayer):
                 return best_card(valid_values(player, game), game)
             # Ako ne se iska koz
             else:
-                if len(player.trumps(game)) != 0:
-                    return player.trumps(game)[0]
+                if p.ALL_GIVEN_CARDS_ON_TABLE[0].type not in player.card_types():
+                    if len(player.trumps(game)) != 0:
+                        return player.trumps(game)[0]
+                    else:
+                        return best_card(valid_values(player, game), game)
                 else:
                     return best_card(valid_values(player, game), game)
 
     # Kogato az sam vdignal
-    elif player.game_i_want == game:
+    elif player.game_i_want == game:       
         if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
             if len(p.ALL_GIVEN_CARDS) == 0:
                 # Ako sam na raka davam J
@@ -389,28 +393,35 @@ def game_type_logic(game, player, coplayer):
                                          'No Trumps', rev=True)
         # Vdignal sam, no ne sam na raka
         else:
-            # Ako se iska koz
-            if p.ALL_GIVEN_CARDS_ON_TABLE[0].type == game:
-                return best_card(valid_values(player, game), 'All Trumps', rev=True)
-            # Ako ne se iska koz
-            else:
+            if p.ALL_GIVEN_CARDS_ON_TABLE[0].type not in player.card_types():
                 if len(player.trumps(game)) != 0:
                     return player.trumps(game)[0]
                 else:
                     return best_card(valid_values(player, game), game)
+            else:
+                return best_card(valid_values(player, game), 'No Trumps', rev=True)
     # Ako dr otbor e vdignal
     else:
         # ako sam parvi - Bez koz
         if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
             # igraq po logika na Bez koz, no ne davam koz
             to_be_played = [c for c in player.cards if c.type != game]
-            return best_card(to_be_played, 'No Trumps')
+            if len(to_be_played) > 0:
+                return best_card(to_be_played, 'No Trumps',rev=True)
+            else:
+                return best_card(player.cards, game)
         else:
             if p.ALL_GIVEN_CARDS_ON_TABLE[0].type == game:
-                return best_card(valid_values(player, game), 'All Trumps', rev=True)
+                if len(player.trumps(game)) != 0:
+                    return best_card(player.trumps(game), 'All Trumps', rev=True)
+                else:
+                    return best_card(player.cards, 'No Trumps')
             # Ako ne se iska koz
             else:
-                if len(player.trumps(game)) != 0:
-                    return player.trumps(game)[0]
+                if p.ALL_GIVEN_CARDS_ON_TABLE[0].type not in player.card_types():
+                    if len(player.trumps(game)) != 0:
+                        return player.trumps(game)[0]
+                    else:
+                        return best_card(player.cards, game)
                 else:
-                    return best_card(valid_values(player, game), game)
+                    return best_card(valid_values(player, game), 'No Trumps', rev=True)

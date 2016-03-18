@@ -220,7 +220,7 @@ class Player:
             self.set_game('All Trumps')
 
         elif self.card_values().count('J') >= 2 and\
-                J_9_more(self):
+                J_9_more(self): 
             self.set_game('All Trumps')
 
         elif self.card_values().count('A') >= 3:
@@ -234,7 +234,7 @@ class Player:
                 A_10_more(self):
             self.set_game('No Trumps')
 
-        # elif J_9_more(self):
+        # if J_9_more(self):
         #     pos1 = self.get_index_by_value('J')
         #     pos2 = self.get_index_by_value('A')
         #     if pos2:
@@ -243,7 +243,7 @@ class Player:
         #         elif self.card_types()[pos1] == self.card_types()[pos2]:
         #             self.set_game(self.card_types()[pos1])
 
-        # if self.game_i_want == '':
+        # elif self.game_i_want == '':
         #     for c in CARD_TYPES:
         #         if self.card_types().count(c) >= 4:
         #             self.set_game(c)
