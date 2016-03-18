@@ -316,28 +316,7 @@ def no_trumps_logic(player, coplayer):
 
     # kogato ne sam na raka
     else:
-        # Ako imam A i K ot edna boq
-        a_k = A_K(player)
-        if a_k:
-            for c in player.cards:
-                for i in range(len(p.ALL_GIVEN_CARDS)):
-                    if p.ALL_GIVEN_CARDS[i].value == '10' and\
-                            p.ALL_GIVEN_CARDS[i].type == a_k[0].type:
-                                if a_k[0] in valid_values(player, 'No Trumps'):
-                                    return a_k[0]
-                                else:
-                                    return best_card(valid_values(player, 'No Trumps'),
-                                                     'No Trumps')
-                    else:
-                        if a_k[1] in valid_values(player, 'No Trumps'):
-                                    return a_k[1]
-                        else:
-                            return best_card(valid_values(player, 'No Trumps'),
-                                             'No Trumps')
-
-        else:
-            return best_card(valid_values(player, 'No Trumps'),
-                             'No Trumps')
+        return best_card(valid_values(player, 'No Trumps'), 'No Trumps')
 
 
 def played_trumps(game):
