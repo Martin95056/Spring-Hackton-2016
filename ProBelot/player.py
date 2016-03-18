@@ -89,39 +89,39 @@ class Player:
                 J_9_more(self):
             self.set_game('All Trumps')
 
-        elif self.card_values().count('A') >= 3:
-            self.set_game('No Trumps')
+        # elif self.card_values().count('A') >= 3:
+        #     self.set_game('No Trumps')
 
-        elif self.card_values().count('A') >= 2 and\
-                self.card_values().count('10') >= 2:
-            self.set_game('No Trumps')
+        # elif self.card_values().count('A') >= 2 and\
+        #         self.card_values().count('10') >= 2:
+        #     self.set_game('No Trumps')
 
-        elif self.card_values().count('A') >= 2 and\
-                A_10_more(self):
-            self.set_game('No Trumps')
+        # elif self.card_values().count('A') >= 2 and\
+        #         A_10_more(self):
+        #     self.set_game('No Trumps')
 
-        elif J_9_more(self):
-            pos1 = self.get_index_by_value('J')
-            pos2 = self.get_index_by_value('A')
-            if pos2:
-                if self.card_types()[pos1] != self.card_types()[pos2]:
-                    self.set_game(self.card_types()[pos1])
-                elif self.card_types()[pos1] == self.card_types()[pos2]:
-                    self.set_game(self.card_types()[pos1])
+        # elif J_9_more(self):
+        #     pos1 = self.get_index_by_value('J')
+        #     pos2 = self.get_index_by_value('A')
+        #     if pos2:
+        #         if self.card_types()[pos1] != self.card_types()[pos2]:
+        #             self.set_game(self.card_types()[pos1])
+        #         elif self.card_types()[pos1] == self.card_types()[pos2]:
+        #             self.set_game(self.card_types()[pos1])
 
-        if self.game_i_want == '':
-            for c in CARD_TYPES:
-                if self.card_types().count(c) >= 4:
-                    self.set_game(c)
-                    break
+        # if self.game_i_want == '':
+        #     for c in CARD_TYPES:
+        #         if self.card_types().count(c) >= 4:
+        #             self.set_game(c)
+        #             break
 
-                elif self.card_types().count(c) == 3 and\
-                        'J' in self.get_all_values_of_one_type(c):
-                    self.set_game(c)
-                    break
+        #         elif self.card_types().count(c) == 3 and\
+        #                 'J' in self.get_all_values_of_one_type(c):
+        #             self.set_game(c)
+        #             break
 
-                else:
-                    self.set_game('Pass')
+        else:
+            self.set_game('Pass')
 
         if self.game_i_want not in valid_games:
             self.set_game('Pass')
