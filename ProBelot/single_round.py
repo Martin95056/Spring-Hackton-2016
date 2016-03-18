@@ -20,6 +20,8 @@ class Round:
 
         self.cpu1.coplayer = self.cpu3
         self.cpu2.coplayer = self.cpu4
+        self.cpu3.coplayer = self.cpu1
+        self.cpu4.coplayer = self.cpu2
 
         self.team1 = p.Team(self.cpu1, self.cpu3)
         self.team2 = p.Team(self.cpu2, self.cpu4)
@@ -103,106 +105,28 @@ class Round:
         self.single_hand = self.single_hand[index:] + self.single_hand[:index]
 
     def take_cards(self):
-        curr_type = p.ALL_GIVEN_CARDS_ON_TABLE[0]
+        curr_type = p.ALL_GIVEN_CARDS_ON_TABLE[0].type
         if self.game_to_be_played == 'All Trumps':
-            print('VSICHKO KOZ')
-            a = [(all_trumps_dic[x.value], x.value)
-                 for x in p.ALL_GIVEN_CARDS_ON_TABLE if x.type == curr_type]
-
-            for v, k in a:
-                if k == max(a)[1]:
-                    c1 = Card(k, curr_type)
-
-            c = Card(reversed_all_trumps_dic[max(a)[0]], curr_type)
-            if c1:
-                i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c1)
+            arr = []
+            for c in p.ALL_GIVEN_CARDS_ON_TABLE[1:]:
+                if c.type == curr_type:
+                    arr.append(c)
+            if len(arr) == 0:
+                return 0
             else:
-                i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c)
+                res = [all_trumps_dic[c.value] for c in arr]
+                max_value = max(res)
+                if max_value < all_trumps_dic[p.ALL_GIVEN_CARDS_ON_TABLE[0].value]:
+                    return 0
+                else:
+                    for i in range(len(arr)):
+                        if all_trumps_dic[arr[i].value] == max_value:
+                            return p.ALL_GIVEN_CARDS_ON_TABLE.index(arr[i])
 
-            if i == 0:
-                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-            elif i == 1:
-                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-            elif i == 2:
-                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-            else:
-                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
         elif self.game_to_be_played == 'No Trumps':
-            print('BEZ KOZ')
-            a = [(no_trumps_dic[x.value], x.value)
-                 for x in p.ALL_GIVEN_CARDS_ON_TABLE if x.type == curr_type]
-
-            for v, k in a:
-                if k == max(a)[1]:
-                    c1 = Card(k, curr_type)
-
-            c = Card(reversed_no_trumps_dic[max(a)[0]], curr_type)
-            if c1:
-                i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c1)
-            else:
-                i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c)
-
-            if i == 0:
-                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-            elif i == 1:
-                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-            elif i == 2:
-                self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-            else:
-                self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
+            pass
         else:
-            print('NA BOQ')
-            if all([x.type != self.game_to_be_played for x in p.ALL_GIVEN_CARDS_ON_TABLE]):
-                a = [(no_trumps_dic[x.value], x.value)
-                     for x in p.ALL_GIVEN_CARDS_ON_TABLE if x.type == curr_type]
-
-                print('NA BOQ 11111111')
-
-                for v, k in a:
-                    if k == max(a)[1]:
-                        c1 = Card(k, curr_type)
-
-                c = Card(reversed_no_trumps_dic[max(a)[0]], curr_type)
-                if c1:
-                    i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c1)
-                else:
-                    i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c)
-
-                if i == 0:
-                    self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-                elif i == 1:
-                    self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-                elif i == 2:
-                    self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-                else:
-                    self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-            else:
-                print('NA BOQ 2222222')
-
-                curr_type = self.game_to_be_played
-                a = [(all_trumps_dic[x.value], x.value)
-                     for x in p.ALL_GIVEN_CARDS_ON_TABLE if x.type == curr_type]
-
-                for v, k in a:
-                    if k == max(a)[1]:
-                        c1 = Card(k, curr_type)
-
-                c = Card(reversed_all_trumps_dic[max(a)[0]], curr_type)
-                if c1:
-                    i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c1)
-                else:
-                    i = p.ALL_GIVEN_CARDS_ON_TABLE.index(c)
-
-                if i == 0:
-                    self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-                elif i == 1:
-                    self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-                elif i == 2:
-                    self.team1.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-                else:
-                    self.team2.take_hand(p.ALL_GIVEN_CARDS_ON_TABLE)
-
-            return i
+            pass
 
     def game_on(self):
         self.pregame()
