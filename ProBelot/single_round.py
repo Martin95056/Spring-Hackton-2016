@@ -124,7 +124,21 @@ class Round:
                             return p.ALL_GIVEN_CARDS_ON_TABLE.index(arr[i])
 
         elif self.game_to_be_played == 'No Trumps':
-            pass
+            arr = []
+            for c in p.ALL_GIVEN_CARDS_ON_TABLE[1:]:
+                if c.type == curr_type:
+                    arr.append(c)
+            if len(arr) == 0:
+                return 0
+            else:
+                res = [no_trumps_dic[c.value] for c in arr]
+                max_value = max(res)
+                if max_value < no_trumps_dic[p.ALL_GIVEN_CARDS_ON_TABLE[0].value]:
+                    return 0
+                else:
+                    for i in range(len(arr)):
+                        if no_trumps_dic[arr[i].value] == max_value:
+                            return p.ALL_GIVEN_CARDS_ON_TABLE.index(arr[i])
         else:
             pass
 

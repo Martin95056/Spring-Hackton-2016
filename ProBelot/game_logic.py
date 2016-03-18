@@ -312,6 +312,8 @@ def no_trumps_logic(player, coplayer):
                                 if v != '10':
                                     pos = player.get_index_by_value(v)
                                     return player.cards[pos]
+                    else:
+                        return player.cards[0]
             else:
                 return best_card(player.cards,
                                  'No Trumps', rev=True)

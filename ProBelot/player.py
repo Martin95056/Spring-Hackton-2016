@@ -223,7 +223,7 @@ class Player:
                 J_9_more(self): 
             self.set_game('All Trumps')
 
-        elif self.card_values().count('A') >= 3:
+        if self.card_values().count('A') >= 3:
             self.set_game('No Trumps')
 
         elif self.card_values().count('A') >= 2 and\
