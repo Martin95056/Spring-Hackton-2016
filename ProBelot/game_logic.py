@@ -73,7 +73,7 @@ def solo_cards(player):
         return 'Diamonds'
     if len(clubs) + len(player_clubs) == 8:
         return 'Clubs'
-    return None
+    return False
 
 
 def J_9_more(player):
@@ -85,7 +85,7 @@ def J_9_more(player):
             for i in asd:
                 return i
     else:
-        return None
+        return False
 
 
 def J_A(player):
@@ -97,7 +97,7 @@ def J_A(player):
             for i in asd:
                 return i
     else:
-        return None
+        return False
 
 
 def A_10_more(player):
@@ -109,7 +109,7 @@ def A_10_more(player):
             for i in asd:
                 return i
     else:
-        return None
+        return False
 
 
 def A_K(player):
@@ -121,7 +121,7 @@ def A_K(player):
             for i in asd:
                 return i
     else:
-        return None
+        return False
 
 
 def valid_values(player, game):
@@ -163,11 +163,11 @@ def all_trumps_logic(player, coplayer):
         if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
             for c in player.cards:
                 # Ako imam 'metar'
-                if solo_cards(player):
+                if solo_cards(player) is not False and solo_cards(player) is not None:
                     if c.type == solo_cards(player):
                         return c
                 # Igrae J, ako imasj J i 9 ot edna boq (ili poveche)
-                elif J_9_more(player):
+                elif J_9_more(player) is not False and J_9_more(player) is not None:
                     return J_9_more(player)[0]
 
                 # Igrae boqta, koqto saotbarnika mu e kazal
@@ -205,37 +205,27 @@ def all_trumps_logic(player, coplayer):
                                     return player.cards[pos]
 
                 else:
-                    # Igrae belot
-                    if player.has_belote():
-                        pos = player.get_index_by_value('Q')
-                        return player.cards[pos]
-                    # igrae 7
-                    elif c.value == '7':
-                        return c
-                    # igrae 8
-                    elif c.value == '8':
-                        return c
+                    return c
+                    # # Igrae belot
+                    # if player.has_belote():
+                    #     pos = player.get_index_by_value('Q')
+                    #     return player.cards[pos]
+                    # # igrae 7
+                    # elif c.value == '7':
+                    #     return c
+                    # # igrae 8
+                    # elif c.value == '8':
+                    #     return c
 
-                    # Priemam, che imam mega ebani karti
-                    else:
-                        return c
+                    # # Priemam, che imam mega ebani karti
+                    # else:
+                    #     return c
 
         # Kogato ne sam na raka
         else:
-            # J i A ot edna boq
-            j_a = J_A(player)
-            if j_a:
-                for c in player.cards:
-                    for i in range(len(p.ALL_GIVEN_CARDS)):
-                        if p.ALL_GIVEN_CARDS[i].value == '9' and\
-                                p.ALL_GIVEN_CARDS[i].type == j_a[0].type:
-                                    return j_a[0]
-                        else:
-                            return j_a[1]
-
-            else:
-                return best_card(valid_values(player, 'All Trumps'),
-                                 'All Trumps')
+            curr_type = p.ALL_GIVEN_CARDS_ON_TABLE[0].type
+            return best_card(valid_values(player, curr_type),
+                             'All Trumps', rev=True)
 
     # Kogato nie ne sme vdignali
     else:
@@ -267,12 +257,15 @@ def all_trumps_logic(player, coplayer):
                                 if v != '9':
                                     pos = player.get_index_by_value(v)
                                     return player.cards[pos]
+                        else:
+                            return c
                 else:
                     return best_card(valid_values(player, 'All Trumps'),
                                      'All Trumps', rev=True)
 
             else:
-                return best_card(valid_values(player, 'All Trumps'),
+                curr_type = p.ALL_GIVEN_CARDS_ON_TABLE[0].type
+                return best_card(valid_values(player, curr_type),
                                  'All Trumps', rev=True)
 
 
@@ -316,7 +309,8 @@ def no_trumps_logic(player, coplayer):
 
     # kogato ne sam na raka
     else:
-        return best_card(valid_values(player, 'No Trumps'), 'No Trumps')
+        curr_game = p.ALL_GIVEN_CARDS_ON_TABLE[0].type
+        return best_card(valid_values(player, curr_game), 'No Trumps')
 
 
 def played_trumps(game):
