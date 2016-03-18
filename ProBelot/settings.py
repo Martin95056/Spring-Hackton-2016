@@ -5,6 +5,7 @@ VALUES = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 BIDDINGS = ['Pass', 'Recontra', 'Contra',
             'All Trumps', 'No Trumps',
             'Spades', 'Hearts', 'Diamonds', 'Clubs']
+CARRE_CARDS = ['10', 'J', 'Q', 'K', 'A']
 
 all_trumps_dic = {
     'A': 11,
@@ -38,6 +39,16 @@ no_trumps_dic = {
     '7': 0,
 }
 
+card_values_dict = {
+    '7': 0,
+    '8': 1,
+    '9': 2,
+    '10': 3,
+    'J': 4,
+    'Q': 5,
+    'K': 6,
+    'A': 7,
+}
 reversed_no_trumps_dic = {
     11: 'A',
     4: 'K',
