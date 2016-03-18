@@ -27,7 +27,7 @@ public class BotCardsDrawer {
 		cardHeigth = (int) screenSize.getHeight() / 8;
 		try {
 			File imageFile = new File(
-					"/home/misho/HackBulgaria-Programming101/ProBelot/Spring-Hackton-2016/card-BMPs/"
+					"src/card-BMPs/"
 							+ "A" + "Spades" + ".bmp");
 			defaultImage = new ImageIcon(ImageIO.read(imageFile)
 					.getScaledInstance(cardWidth, cardHeigth,
@@ -53,7 +53,7 @@ public class BotCardsDrawer {
 	}
 
 	public void drawTopBotCards(int cardsNumber) {
-
+		drawX+=cardWidth;
 		for (int i = 0; i < cardsNumber; i++) {
 			drawCard(false);
 			drawX += cardWidth + 15;
@@ -62,7 +62,7 @@ public class BotCardsDrawer {
 	}
 
 	public void drawLeftBotCards(int cardsNumber) {
-		drawX = 0;
+		drawX = cardWidth;
 		for (int i = 0; i < cardsNumber; i++) {
 			drawCard(true);
 			drawY += cardHeigth + 15;

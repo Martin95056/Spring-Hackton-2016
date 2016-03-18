@@ -65,7 +65,7 @@ public class CardsDrawer {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			File imageFile = new File(
-					"/home/misho/HackBulgaria-Programming101/ProBelot/Spring-Hackton-2016/card-BMPs/"
+					"./src/card-BMPs/"
 							+ card.getValue() + card.getSuit() + ".bmp");
 			image = new ImageIcon(ImageIO.read(imageFile).getScaledInstance(
 					cardWidth, cardHeigth, Image.SCALE_SMOOTH));

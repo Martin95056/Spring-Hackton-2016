@@ -34,7 +34,7 @@ public class PlayerCardsDrawer {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		cardWidth = (int) screenSize.getWidth() / 15;
 		cardHeigth = (int) screenSize.getHeight() / 8;
-		drawX = cardWidth * 2;
+		drawX = cardWidth * 3;
 		drawY = (int) screenSize.getHeight() - cardHeigth - 30;
 		centralDrawWidth = drawX + (int) 3.7 * cardWidth + 50;
 		centralDrawHeigth = (int) (drawY - 1.5 * cardHeigth - 30);
@@ -51,7 +51,7 @@ public class PlayerCardsDrawer {
 		ImageIcon image = null;
 		try {
 			File imageFile = new File(
-					"/home/misho/HackBulgaria-Programming101/ProBelot/Spring-Hackton-2016/card-BMPs/"
+					"./src/card-BMPs/"
 							+ card.getValue() + card.getSuit() + ".bmp");
 			image = new ImageIcon(ImageIO.read(imageFile).getScaledInstance(
 					cardWidth, cardHeigth, Image.SCALE_SMOOTH));
