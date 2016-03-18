@@ -2,7 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="/home/misho/Downloads/json-20090211.jar"/>
+=======
+	<classpathentry kind="lib" path="D:/Downloads/json-20090211.jar"/>
+	<classpathentry kind="lib" path="D:/Downloads/json-simple-1.1.1.jar"/>
+>>>>>>> e6009faada078f18df69081c1934b7d2ea01f230
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
