@@ -1,5 +1,5 @@
 from game_logic import J_9_more, A_10_more
-from settings import CARD_TYPES
+from settings import CARD_TYPES, card_values_dict
 
 global ALL_GIVEN_CARDS_ON_TABLE
 global ALL_GIVEN_CARDS
@@ -55,6 +55,136 @@ class Player:
                 return True
             else:
                 return False
+
+    def has_announce(self):
+
+        clubs = []
+        diamonds = []
+        hearts = []
+        spades = []
+        announce = []
+
+        if self.has_belote():
+            announce.append('belote')
+
+        for card in self.card_values():
+            if self.card_values().count(card.value) == 4:
+                announce.append('carre')
+
+        for i in range(0, len(self.card_types())):
+            if self.card_types()[i] == 'Clubs':
+                clubs.append(self.cards[i])
+            elif self.card_types()[i] == 'Diamonds':
+                diamonds.append(self.cards[i])
+            elif self.card_types()[i] == 'Hearts':
+                hearts.append(self.cards[i])
+            else:
+                spades.append(self.cards[i])
+
+        if len(clubs) != 0 and len(clubs) >= 3:
+            club_values = []
+            counter = 0
+            for card in clubs:
+                club_values.append(card_values_dict[str(card.value)])
+            club_values.sort()
+            for i in range(0, len(club_values) - 1):
+                if club_values[i] == club_values[i + 1] - 1:
+                    counter += 1
+                print(counter)
+                if club_values[i] != club_values[i + 1] - 1 or i == len(club_values) - 2:
+                    if counter >= 2:
+                        if counter == 7:
+                            announce.append('quint')
+                            announce.append('tierce')
+                        elif counter == 6:
+                            announce.append('quarte')
+                            announce.append('tierce')
+                        elif counter >= 4:
+                            announce.append('quint')
+                        elif counter == 3:
+                            announce.append('quarte')
+                        else:
+                            announce.append('tierce')
+                    counter = 0
+
+        if len(diamonds) != 0 and len(diamonds) >= 3:
+            diamond_values = []
+            counter = 0
+            for card in diamonds:
+                diamond_values.append(card_values_dict[str(card.value)])
+            diamond_values.sort()
+            for i in range(0, len(diamond_values) - 1):
+                if diamond_values[i] == diamond_values[i + 1] - 1:
+                    counter += 1
+                print(counter)
+                if diamond_values[i] != diamond_values[i + 1] - 1 or i == len(diamond_values) - 2:
+                    if counter >= 2:
+                        if counter == 7:
+                            announce.append('quint')
+                            announce.append('tierce')
+                        elif counter == 6:
+                            announce.append('quarte')
+                            announce.append('tierce')
+                        elif counter >= 4:
+                            announce.append('quint')
+                        elif counter == 3:
+                            announce.append('quarte')
+                        else:
+                            announce.append('tierce')
+                    counter = 0
+
+        if len(hearts) != 0 and len(hearts) >= 3:
+            heart_values = []
+            counter = 0
+            for card in hearts:
+                heart_values.append(card_values_dict[str(card.value)])
+            heart_values.sort()
+            for i in range(0, len(heart_values) - 1):
+                if heart_values[i] == heart_values[i + 1] - 1:
+                    counter += 1
+                print(counter)
+                if heart_values[i] != heart_values[i + 1] - 1 or i == len(heart_values) - 2:
+                    if counter >= 2:
+                        if counter == 7:
+                            announce.append('quint')
+                            announce.append('tierce')
+                        elif counter == 6:
+                            announce.append('quarte')
+                            announce.append('tierce')
+                        elif counter >= 4:
+                            announce.append('quint')
+                        elif counter == 3:
+                            announce.append('quarte')
+                        else:
+                            announce.append('tierce')
+                    counter = 0
+
+        if len(spades) != 0 and len(spades) >= 3:
+            spades_values = []
+            counter = 0
+            for card in spades:
+                spades_values.append(card_values_dict[str(card.value)])
+            spades_values.sort()
+            for i in range(0, len(spades_values) - 1):
+                if spades_values[i] == spades_values[i + 1] - 1:
+                    counter += 1
+                print(counter)
+                if spades_values[i] != spades_values[i + 1] - 1 or i == len(spades_values) - 2:
+                    if counter >= 2:
+                        if counter == 7:
+                            announce.append('quint')
+                            announce.append('tierce')
+                        elif counter == 6:
+                            announce.append('quarte')
+                            announce.append('tierce')
+                        elif counter >= 4:
+                            announce.append('quint')
+                        elif counter == 3:
+                            announce.append('quarte')
+                        else:
+                            announce.append('tierce')
+                    counter = 0
+        return announce
 
     def get_index_by_value(self, value):
         try:
