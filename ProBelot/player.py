@@ -27,17 +27,20 @@ class Player:
         return [c.value for c in self.cards]
 
     def throw_card(self, card):
-        print('FIRGAM KIRTA')
         print(str(card))
+        print('FIRGAM KIRTA')
+        print([str(x) for x in self.cards])
         print('FIRGNAL SAMGA')
-        self.cards.remove(card)
         self.given_cards.append(card)
+        self.cards.remove(card)
+        print([str(x) for x in self.cards])
 
         ALL_GIVEN_CARDS.append(card)
 
         ALL_GIVEN_CARDS_ON_TABLE.append(card)
 
         print([str(x) for x in ALL_GIVEN_CARDS])
+        print(len(ALL_GIVEN_CARDS))
         print([str(x) for x in ALL_GIVEN_CARDS_ON_TABLE])
 
     def has_cards(self):
@@ -220,16 +223,16 @@ class Player:
                 J_9_more(self):
             self.set_game('All Trumps')
 
-        # elif self.card_values().count('A') >= 3:
-        #     self.set_game('No Trumps')
+        elif self.card_values().count('A') >= 3:
+            self.set_game('No Trumps')
 
-        # elif self.card_values().count('A') >= 2 and\
-        #         self.card_values().count('10') >= 2:
-        #     self.set_game('No Trumps')
+        elif self.card_values().count('A') >= 2 and\
+                self.card_values().count('10') >= 2:
+            self.set_game('No Trumps')
 
-        # elif self.card_values().count('A') >= 2 and\
-        #         A_10_more(self):
-        #     self.set_game('No Trumps')
+        elif self.card_values().count('A') >= 2 and\
+                A_10_more(self):
+            self.set_game('No Trumps')
 
         # elif J_9_more(self):
         #     pos1 = self.get_index_by_value('J')

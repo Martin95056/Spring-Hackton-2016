@@ -140,9 +140,10 @@ class Round:
 
         cur_res1 = 0
         cur_res2 = 0
-        while len(p.ALL_GIVEN_CARDS) <= 32:
+        while len(p.ALL_GIVEN_CARDS) < 32:
             if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
                 if self.game_to_be_played == 'All Trumps':
+                    print('---------------------')
                     self.single_hand[0].throw_card(
                         all_trumps_logic(self.single_hand[0], self.single_hand[2]))
                     self.single_hand[1].throw_card(
@@ -165,7 +166,6 @@ class Round:
                 elif self.game_to_be_played in CARD_TYPES:
                     self.single_hand[0].throw_card(
                         game_type_logic(self.game_to_be_played, self.single_hand[0], self.single_hand[2]))
-                    print('---------------------')
                     print(game_type_logic(self.game_to_be_played, self.single_hand[0], self.single_hand[2]))
                     self.single_hand[1].throw_card(
                         game_type_logic(self.game_to_be_played, self.single_hand[1], self.single_hand[3]))
