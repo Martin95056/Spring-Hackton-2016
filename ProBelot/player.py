@@ -26,16 +26,18 @@ class Player:
         return [c.value for c in self.cards]
 
     def throw_card(self, card):
+        print('FIRGAM KIRTA')
+        print(str(card))
+        print('FIRGNAL SAMGA')
         self.cards.remove(card)
         self.given_cards.append(card)
 
-        globals(ALL_GIVEN_CARDS).append(card)
-        if len(globals(ALL_GIVEN_CARDS)) == 32:
-            del globals(ALL_GIVEN_CARDS)[:]
+        ALL_GIVEN_CARDS.append(card)
 
-        globals(ALL_GIVEN_CARDS_ON_TABLE).append(card)
-        if len(globals(ALL_GIVEN_CARDS_ON_TABLE)) == 4:
-            del globals(ALL_GIVEN_CARDS_ON_TABLE)[:]
+        ALL_GIVEN_CARDS_ON_TABLE.append(card)
+
+        print([str(x) for x in ALL_GIVEN_CARDS])
+        print([str(x) for x in ALL_GIVEN_CARDS_ON_TABLE])
 
     def has_cards(self):
         return len(self.cards) > 0
