@@ -424,6 +424,6 @@ def game_type_logic(game, player, coplayer):
                     if len(player.trumps(game)) != 0:
                         return player.trumps(game)[0]
                     else:
-                        return best_card(player.cards, game)
+                        return player.cards[0]
                 else:
                     return best_card(valid_values(player, game), 'No Trumps', rev=True)

@@ -4,6 +4,9 @@ from settings import BIDDINGS, CARD_TYPES, all_trumps_dic, no_trumps_dic,\
                      reversed_all_trumps_dic, reversed_no_trumps_dic
 from game_logic import all_trumps_logic, no_trumps_logic, game_type_logic
 
+from time import sleep
+
+
 
 class Round:
     def __init__(self, player1, player2, player3, player4):
@@ -140,7 +143,39 @@ class Round:
                         if no_trumps_dic[arr[i].value] == max_value:
                             return p.ALL_GIVEN_CARDS_ON_TABLE.index(arr[i])
         else:
-            pass
+            arr = []
+            curr_type = self.game_to_be_played
+            if p.ALL_GIVEN_CARDS_ON_TABLE[0].type == curr_type:
+                for card in p.ALL_GIVEN_CARDS_ON_TABLE[1:]:
+                    if card.type == curr_type and all_trumps_dic[card.value] > all_trumps_dic[p.ALL_GIVEN_CARDS_ON_TABLE[0].value]:
+                        arr.append(card)
+                if len(arr) == 0:
+                    return 0
+                else:
+                    result = [all_trumps_dic[c.value] for c in arr]
+                    max_value = max(result)
+                    for i in range(len(arr)):
+                        if all_trumps_dic[arr[i].value] == max_value:
+                            return p.ALL_GIVEN_CARDS_ON_TABLE.index(arr[i])
+            elif p.ALL_GIVEN_CARDS_ON_TABLE[0].type != curr_type:
+                for card in p.ALL_GIVEN_CARDS_ON_TABLE[1:]:
+                    if card.type == curr_type:
+                        arr.append(card)
+                if len(arr) != 0:
+                    result = [all_trumps_dic[c.value] for c in arr]
+                    max_value = max(result)
+                    for i in range(len(arr)):
+                        if all_trumps_dic[arr[i].value] == max_value:
+                            return p.ALL_GIVEN_CARDS_ON_TABLE.index(arr[i])
+                else:
+                    result = [no_trumps_dic[c.value] for c in p.ALL_GIVEN_CARDS_ON_TABLE]
+                    max_value = max(result)
+                    for i in range(len(arr)):
+                        if no_trumps_dic[arr[i].value] == max_value:
+                            return p.ALL_GIVEN_CARDS_ON_TABLE.index(arr[i])
+
+
+
 
     def game_on(self):
         self.pregame()
@@ -157,25 +192,34 @@ class Round:
         while len(p.ALL_GIVEN_CARDS) < 32:
             if len(p.ALL_GIVEN_CARDS_ON_TABLE) == 0:
                 if self.game_to_be_played == 'All Trumps':
-                    print('---------------------')
+                    print(self.single_hand[0].name)
                     self.single_hand[0].throw_card(
                         all_trumps_logic(self.single_hand[0], self.single_hand[2]))
+                    print(self.single_hand[1].name)
                     self.single_hand[1].throw_card(
                         all_trumps_logic(self.single_hand[1], self.single_hand[3]))
+                    print(self.single_hand[2].name)
                     self.single_hand[2].throw_card(
                         all_trumps_logic(self.single_hand[2], self.single_hand[0]))
+                    print(self.single_hand[3].name)
                     self.single_hand[3].throw_card(
                         all_trumps_logic(self.single_hand[3], self.single_hand[1]))
+                    print("\n")
 
                 elif self.game_to_be_played == 'No Trumps':
+                    print(self.single_hand[0].name)
                     self.single_hand[0].throw_card(
                         no_trumps_logic(self.single_hand[0], self.single_hand[2]))
+                    print(self.single_hand[1].name)
                     self.single_hand[1].throw_card(
                         no_trumps_logic(self.single_hand[1], self.single_hand[3]))
+                    print(self.single_hand[2].name)
                     self.single_hand[2].throw_card(
                         no_trumps_logic(self.single_hand[2], self.single_hand[0]))
+                    print(self.single_hand[3].name)
                     self.single_hand[3].throw_card(
                         no_trumps_logic(self.single_hand[3], self.single_hand[1]))
+                    print("\n")
 
                 elif self.game_to_be_played in CARD_TYPES:
                     self.single_hand[0].throw_card(
@@ -183,7 +227,6 @@ class Round:
                     print(game_type_logic(self.game_to_be_played, self.single_hand[0], self.single_hand[2]))
                     self.single_hand[1].throw_card(
                         game_type_logic(self.game_to_be_played, self.single_hand[1], self.single_hand[3]))
-                    print('*********************')
                     print(game_type_logic(self.game_to_be_played, self.single_hand[1], self.single_hand[3]))
                     self.single_hand[2].throw_card(
                         game_type_logic(self.game_to_be_played, self.single_hand[2], self.single_hand[0]))
@@ -191,14 +234,10 @@ class Round:
                     print(game_type_logic(self.game_to_be_played, self.single_hand[2], self.single_hand[0]))
                     self.single_hand[3].throw_card(
                         game_type_logic(self.game_to_be_played, self.single_hand[3], self.single_hand[1]))
-                    print('********************')
                     print(game_type_logic(self.game_to_be_played, self.single_hand[3], self.single_hand[1]))
 
                 else:
                     break
-
-            else:
-                print('ALL_GIVEN_CARDS_ON_TABLE NE E {{0}}')
 
             winner = self.take_cards()
             if winner == 0 or winner == 2:
@@ -213,12 +252,13 @@ class Round:
                 cur_res2 += self.team2.cards_to_points(self.game_to_be_played)
 
                 del p.ALL_GIVEN_CARDS_ON_TABLE[:]
+            sleep(2)
 
 
-p1 = p.Player()
-p2 = p.Player()
-p3 = p.Player()
-p4 = p.Player()
+p1 = p.Player('Player 1')
+p2 = p.Player('Player 2')
+p3 = p.Player('Player 3')
+p4 = p.Player('Player 4')
 
 r = Round(p1, p2, p3, p4)
 r.game_on()

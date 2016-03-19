@@ -1,7 +1,6 @@
 from game_logic import J_9_more, A_10_more
 from settings import CARD_TYPES, card_values_dict
 from settings import all_trumps_dic, no_trumps_dic
-
 global ALL_GIVEN_CARDS_ON_TABLE
 global ALL_GIVEN_CARDS
 
@@ -10,7 +9,8 @@ ALL_GIVEN_CARDS_ON_TABLE = []
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, name=None):
+        self.name = name
         self.cards = []
         self.coplayer = None
         self.given_cards = []
@@ -27,21 +27,13 @@ class Player:
         return [c.value for c in self.cards]
 
     def throw_card(self, card):
-        print(str(card))
-        print('FIRGAM KIRTA')
-        print([str(x) for x in self.cards])
-        print('FIRGNAL SAMGA')
+        print(card)
         self.given_cards.append(card)
         self.cards.remove(card)
-        print([str(x) for x in self.cards])
 
         ALL_GIVEN_CARDS.append(card)
 
         ALL_GIVEN_CARDS_ON_TABLE.append(card)
-
-        print([str(x) for x in ALL_GIVEN_CARDS])
-        print(len(ALL_GIVEN_CARDS))
-        print([str(x) for x in ALL_GIVEN_CARDS_ON_TABLE])
 
     def has_cards(self):
         return len(self.cards) > 0
